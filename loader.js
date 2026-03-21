@@ -3,6 +3,7 @@
  * 负责动态加载组件和内容
  */
 
+
 class CyberLoader {
     constructor() {
         this.components = {};
@@ -93,7 +94,10 @@ class CyberLoader {
             this.components.hero = await this.loadComponent('components/_pages/home/hero.html');
             this.components.features = await this.loadComponent('components/_pages/home/features.html');
             this.components.cta = await this.loadComponent('components/_pages/home/cta.html');
-            
+            // 加载3D实验室组件
+            this.components.threejsDemo = await this.loadComponent('components/features/lab/threejs-demo.html');
+        
+        
         } catch (error) {
             console.error('组件加载失败:', error);
             this.showError('系统组件加载失败，请刷新页面重试。');
@@ -422,6 +426,19 @@ class CyberLoader {
                         </div>
                     </div>
                 </section>
+            `,
+            'threejs-demo': `
+                <div class="component-notice">
+                    <h3>3D数字游灵演示</h3>
+                    <p>3D组件加载中... 如果长时间未显示，请确保已引入Three.js和GSAP库。</p>
+                    <div class="tech-requirements">
+                        <p>所需库：</p>
+                        <ul>
+                            <li>Three.js (r128+)</li>
+                            <li>GSAP 3.11.4+</li>
+                        </ul>
+                    </div>
+                </div>
             `
         };
         
@@ -652,8 +669,41 @@ class CyberLoader {
         this.showNotification(`加载 ${page} 页面...`);
         
         try {
-            // 这里可以添加页面切换的动画和内容加载逻辑
-            await this.delay(500);
+            const contentContainer = document.getElementById('content-container');
+            if (!contentContainer) return;
+            
+            // 清空当前内容
+            contentContainer.innerHTML = '';
+            
+            // 根据页面加载不同内容
+            if (page === 'home') {
+                contentContainer.innerHTML = `
+                    ${this.components.hero || ''}
+                    ${this.components.features || ''}
+                    ${this.components.cta || ''}
+                `;
+            } else if (page === 'lab') {
+                // ✅ 修复：先加载实验室页面框架
+                const labPage = await this.loadComponent('pages/lab/index.html');
+                contentContainer.innerHTML = labPage;
+                
+                // ✅ 然后动态加载3D组件到指定位置
+                setTimeout(() => {
+                    const demoContainer = document.getElementById('threejs-demo-container');
+                    if (demoContainer && this.components.threejsDemo) {
+                        demoContainer.innerHTML = this.components.threejsDemo;
+                    }
+                }, 100);
+            } else {
+                // 其他页面的加载逻辑
+                const pageContent = await this.loadComponent(`pages/${page}/index.html`);
+                contentContainer.innerHTML = pageContent;
+            }
+            
+            // 重新初始化动画和交互
+            this.initAnimations();
+            
+            await this.delay(300);
             this.showNotification(`${page} 页面加载完成`);
         } catch (error) {
             console.error('页面导航失败:', error);

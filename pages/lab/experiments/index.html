@@ -1,0 +1,12 @@
+<!-- 在适当位置添加 -->
+<div id="threejs-demo-container">
+    <!-- 组件会通过loader.js加载 -->
+  </div>
+  
+  <script>
+  // 在页面脚本中加载组件
+  loadComponent('features/lab/threejs-demo')
+    .then(component => {
+      document.getElementById('threejs-demo-container').appendChild(component);
+    });
+  </script>
