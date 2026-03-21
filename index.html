@@ -1,15 +1,107 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="cyberpunk">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>梅梅的个人网站</title>
+    <title>我的数字空间 | CyberPunk Aesthetic</title>
+    <link rel="stylesheet" href="styles/theme.css">
+    <link rel="stylesheet" href="styles/global.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600&family=Oxanium:wght@300;400;600&family=Orbitron:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/svg+xml" href="assets/icons/logo.svg">
+    <script type="module" src="loader.js" defer></script>
 </head>
 <body>
-    <h1>你好，世界！</h1>
-    <h2>wwwwwww</h2>
-    <p>欢迎来到我的第一个个人网站。这里是使用 GitHub Pages 搭建的。</p>
-    <p>人麻了</p>
-    <p>wedfvbnmko</p>
+    <!-- 霓虹网格背景 -->
+    <div class="neon-grid-bg">
+        <div class="grid-line"></div>
+        <div class="grid-line"></div>
+        <div class="grid-line"></div>
+        <div class="floating-particle" style="--x: 20%; --y: 30%;"></div>
+        <div class="floating-particle" style="--x: 70%; --y: 60%;"></div>
+        <div class="floating-particle" style="--x: 40%; --y: 80%;"></div>
+    </div>
+
+    <!-- CRT扫描线效果 -->
+    <div class="crt-scanlines"></div>
+    <div class="crt-glitch"></div>
+
+    <!-- 加载覆盖层 -->
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="loading-content">
+            <div class="loading-logo">
+                <div class="logo-cyber">
+                    <span class="logo-char">◢</span>
+                    <span class="logo-char">◤</span>
+                    <span class="logo-char">◥</span>
+                    <span class="logo-char">◣</span>
+                </div>
+            </div>
+            <div class="loading-progress">
+                <div class="progress-bar">
+                    <div class="progress-fill" data-progress="0"></div>
+                </div>
+                <div class="loading-text">
+                    <span class="loading-status">INITIALIZING SYSTEM...</span>
+                    <span class="loading-percent">0%</span>
+                </div>
+            </div>
+            <div class="loading-hint">
+                <i class="fas fa-terminal"></i>
+                <span>// 欢迎来到我的数字空间</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主容器 -->
+    <div id="app" class="app-container" style="opacity: 0;">
+        <!-- 头部导航将通过loader.js动态加载 -->
+        <main class="main-content">
+            <!-- Hero区域将通过loader.js动态加载 -->
+            <div id="content-container"></div>
+        </main>
+        <!-- 页脚将通过loader.js动态加载 -->
+    </div>
+
+    <!-- 返回顶部按钮 -->
+    <button id="back-to-top" class="back-to-top-btn" aria-label="返回顶部">
+        <i class="fas fa-chevron-up"></i>
+        <span class="btn-text">TOP</span>
+    </button>
+
+    <!-- 系统通知 -->
+    <div id="system-notification" class="system-notification">
+        <div class="notification-content">
+            <i class="fas fa-terminal"></i>
+            <span class="notification-text"></span>
+        </div>
+    </div>
+
+    <!-- 主题切换按钮 -->
+    <div class="theme-toggle">
+        <button id="theme-switcher" class="theme-switch-btn" aria-label="切换主题">
+            <i class="fas fa-palette"></i>
+            <span class="theme-label">THEME</span>
+        </button>
+        <div class="theme-options">
+            <button data-theme="cyberpunk" class="theme-option active">CYBER</button>
+            <button data-theme="retro" class="theme-option">RETRO</button>
+            <button data-theme="soft" class="theme-option">SOFT</button>
+        </div>
+    </div>
+
+    <!-- 音乐播放器 -->
+    <div class="music-player">
+        <button id="music-toggle" class="music-toggle" aria-label="播放/暂停背景音乐">
+            <i class="fas fa-play"></i>
+        </button>
+        <audio id="bg-music" loop>
+            <source src="assets/audio/ambient.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <script src="scripts/app.js" defer></script>
 </body>
 </html>

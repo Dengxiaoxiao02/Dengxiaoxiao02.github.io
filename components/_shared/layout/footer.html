@@ -1,0 +1,181 @@
+<footer class="cyber-footer">
+    <div class="footer-grid">
+        <div class="footer-col">
+            <div class="footer-logo">
+                <span class="logo-icon">◢◤</span>
+                <h3>数字空间</h3>
+            </div>
+            <p class="footer-tagline">在代码与设计的边界探索无限可能</p>
+            <div class="footer-social">
+                <a href="https://github.com/yourusername" class="social-link" aria-label="GitHub" target="_blank">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="https://twitter.com/yourusername" class="social-link" aria-label="Twitter" target="_blank">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="https://instagram.com/yourusername" class="social-link" aria-label="Instagram" target="_blank">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="mailto:you@example.com" class="social-link" aria-label="Email">
+                    <i class="fas fa-envelope"></i>
+                </a>
+            </div>
+        </div>
+        
+        <div class="footer-col">
+            <h4>探索</h4>
+            <ul class="footer-links">
+                <li><a href="/">首页</a></li>
+                <li><a href="pages/about/">关于我</a></li>
+                <li><a href="pages/portfolio/">作品集</a></li>
+                <li><a href="pages/blog/">博客文章</a></li>
+                <li><a href="pages/lab/">创意实验</a></li>
+            </ul>
+        </div>
+        
+        <div class="footer-col">
+            <h4>工具资源</h4>
+            <ul class="footer-links">
+                <li><a href="pages/resources/">开发者工具</a></li>
+                <li><a href="pages/resources/templates/resume.html">简历模板</a></li>
+                <li><a href="pages/fun/now.html">此刻的我</a></li>
+                <li><a href="pages/fun/quiz.html">了解我测试</a></li>
+                <li><a href="pages/fun/os.html">数字工作台</a></li>
+            </ul>
+        </div>
+        
+        <div class="footer-col">
+            <h4>保持联系</h4>
+            <div class="footer-newsletter">
+                <p>订阅我的数字动态</p>
+                <form class="newsletter-form" id="newsletter-form">
+                    <input type="email" placeholder="your.email@example.com" class="cyber-input" required>
+                    <button type="submit" class="cyber-btn small">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </form>
+                <p class="newsletter-hint">不定期分享技术与创意</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer-bottom">
+        <p>© 2024 我的数字空间. 探索永不止步.</p>
+        <p>
+            <span>❤️ 由创造力驱动 | </span>
+            <span id="visitor-count">访客: 加载中...</span>
+        </p>
+    </div>
+</footer>
+
+<style>
+    .newsletter-form {
+        display: flex;
+        gap: var(--spacing-sm);
+        margin-top: var(--spacing-md);
+    }
+    
+    .newsletter-hint {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        margin-top: var(--spacing-sm);
+    }
+    
+    .footer-bottom {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding-top: var(--spacing-xl);
+        border-top: 1px solid var(--border-color);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        flex-wrap: wrap;
+        gap: var(--spacing-md);
+    }
+    
+    #visitor-count {
+        font-family: var(--font-body);
+        color: var(--primary);
+    }
+    
+    @media (max-width: 768px) {
+        .footer-bottom {
+            flex-direction: column;
+            text-align: center;
+            gap: var(--spacing-sm);
+        }
+    }
+</style>
+
+<script>
+    // 访客计数器
+    document.addEventListener('DOMContentLoaded', function() {
+        const countElement = document.getElementById('visitor-count');
+        let count = localStorage.getItem('visitorCount') || 1000;
+        
+        // 模拟访客数增加
+        count = parseInt(count) + Math.floor(Math.random() * 10) + 1;
+        localStorage.setItem('visitorCount', count);
+        
+        // 数字滚动效果
+        let current = 0;
+        const increment = Math.ceil(count / 50);
+        const timer = setInterval(() => {
+            current += increment;
+            if (current >= count) {
+                current = count;
+                clearInterval(timer);
+            }
+            countElement.textContent = `访客: ${current.toLocaleString()}`;
+        }, 30);
+        
+        // 通讯表单
+        const newsletterForm = document.getElementById('newsletter-form');
+        if (newsletterForm) {
+            newsletterForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const email = this.querySelector('input[type="email"]').value;
+                
+                // 模拟提交
+                const submitBtn = this.querySelector('button[type="submit"]');
+                const originalHTML = submitBtn.innerHTML;
+                
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                submitBtn.disabled = true;
+                
+                setTimeout(() => {
+                    submitBtn.innerHTML = '<i class="fas fa-check"></i>';
+                    
+                    // 显示成功消息
+                    const notification = document.getElementById('system-notification') || 
+                        (function() {
+                            const notif = document.createElement('div');
+                            notif.id = 'system-notification';
+                            notif.className = 'system-notification';
+                            notif.innerHTML = `
+                                <div class="notification-content">
+                                    <i class="fas fa-terminal"></i>
+                                    <span class="notification-text"></span>
+                                </div>
+                            `;
+                            document.body.appendChild(notif);
+                            return notif;
+                        })();
+                    
+                    const notifText = notification.querySelector('.notification-text');
+                    notifText.textContent = `感谢订阅！确认邮件已发送至 ${email}`;
+                    notification.classList.add('show');
+                    
+                    setTimeout(() => {
+                        notification.classList.remove('show');
+                        submitBtn.innerHTML = originalHTML;
+                        submitBtn.disabled = false;
+                        newsletterForm.reset();
+                    }, 3000);
+                }, 1500);
+            });
+        }
+    });
+</script>

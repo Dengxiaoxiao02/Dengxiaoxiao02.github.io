@@ -1,0 +1,380 @@
+<section class="about-timeline">
+    <div class="section-header">
+        <h2 class="section-title">
+            <span class="title-decoration">⌚</span>
+            成长轨迹
+            <span class="title-decoration">⌚</span>
+        </h2>
+        <p class="section-subtitle">记录探索数字世界的每一个重要时刻</p>
+    </div>
+    
+    <div class="timeline-container">
+        <div class="timeline">
+            <!-- 时间线项目 -->
+            <div class="timeline-item">
+                <div class="timeline-date">2024</div>
+                <div class="timeline-content">
+                    <div class="timeline-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3 class="timeline-title">创建个人数字空间</h3>
+                    <p class="timeline-description">
+                        开始构建这个网站，作为我的数字名片和创意实验场。
+                        探索赛博朋克美学与现代Web技术的结合。
+                    </p>
+                    <div class="timeline-tags">
+                        <span class="tag">Web Design</span>
+                        <span class="tag">Creative Coding</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-date">2023</div>
+                <div class="timeline-content">
+                    <div class="timeline-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3 class="timeline-title">深入前端开发</h3>
+                    <p class="timeline-description">
+                        专注于现代前端技术栈，掌握Vue.js、React等框架。
+                        参与多个企业级项目开发，提升工程化能力。
+                    </p>
+                    <div class="timeline-tags">
+                        <span class="tag">Vue.js</span>
+                        <span class="tag">React</span>
+                        <span class="tag">TypeScript</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-date">2022</div>
+                <div class="timeline-content">
+                    <div class="timeline-icon">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h3 class="timeline-title">探索UI/UX设计</h3>
+                    <p class="timeline-description">
+                        系统学习用户界面与用户体验设计。
+                        在Figma中实践设计系统，理解设计思维在开发中的重要性。
+                    </p>
+                    <div class="timeline-tags">
+                        <span class="tag">Figma</span>
+                        <span class="tag">UI Design</span>
+                        <span class="tag">UX Research</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-date">2021</div>
+                <div class="timeline-content">
+                    <div class="timeline-icon">
+                        <i class="fas fa-gamepad"></i>
+                    </div>
+                    <h3 class="timeline-title">发现创意编程</h3>
+                    <p class="timeline-description">
+                        接触生成艺术与交互设计，用p5.js、Three.js等工具探索代码的创意表达。
+                        开始将技术视为艺术创作媒介。
+                    </p>
+                    <div class="timeline-tags">
+                        <span class="tag">p5.js</span>
+                        <span class="tag">Three.js</span>
+                        <span class="tag">Creative Coding</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-date">2020</div>
+                <div class="timeline-content">
+                    <div class="timeline-icon">
+                        <i class="fas fa-laptop-code"></i>
+                    </div>
+                    <h3 class="timeline-title">开启编程之旅</h3>
+                    <p class="timeline-description">
+                        从第一个"Hello World"开始，踏上编程学习之路。
+                        被代码创造数字世界的能力深深吸引，决定深入探索。
+                    </p>
+                    <div class="timeline-tags">
+                        <span class="tag">JavaScript</span>
+                        <span class="tag">HTML/CSS</span>
+                        <span class="tag">Web Fundamentals</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="timeline-controls">
+        <button class="cyber-btn ghost" id="timeline-prev">
+            <i class="fas fa-chevron-left"></i>
+            <span>上一个</span>
+        </button>
+        <button class="cyber-btn ghost" id="timeline-next">
+            <span>下一个</span>
+            <i class="fas fa-chevron-right"></i>
+        </button>
+    </div>
+</section>
+
+<style>
+    .about-timeline {
+        padding: var(--spacing-xxl) var(--spacing-xl);
+    }
+    
+    .timeline-container {
+        max-width: 1200px;
+        margin: var(--spacing-xxl) auto;
+        position: relative;
+    }
+    
+    .timeline {
+        position: relative;
+        padding: var(--spacing-xl) 0;
+    }
+    
+    /* 时间线主线 */
+    .timeline::before {
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: linear-gradient(to bottom, 
+            transparent, 
+            var(--primary), 
+            var(--secondary), 
+            transparent);
+        transform: translateX(-50%);
+    }
+    
+    .timeline-item {
+        display: flex;
+        margin-bottom: var(--spacing-xxl);
+        position: relative;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all var(--transition-normal);
+    }
+    
+    .timeline-item.animate-in {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+    .timeline-item:nth-child(odd) {
+        flex-direction: row;
+    }
+    
+    .timeline-item:nth-child(even) {
+        flex-direction: row-reverse;
+    }
+    
+    .timeline-date {
+        flex: 0 0 200px;
+        text-align: center;
+        padding: var(--spacing-md);
+        font-family: var(--font-heading);
+        font-size: 1.5rem;
+        color: var(--primary);
+        font-weight: 600;
+    }
+    
+    .timeline-content {
+        flex: 1;
+        padding: var(--spacing-lg);
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius-lg);
+        position: relative;
+        max-width: 500px;
+    }
+    
+    .timeline-content::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        width: 20px;
+        height: 2px;
+        background: var(--primary);
+    }
+    
+    .timeline-item:nth-child(odd) .timeline-content::before {
+        right: 100%;
+    }
+    
+    .timeline-item:nth-child(even) .timeline-content::before {
+        left: 100%;
+    }
+    
+    /* 时间线图标 */
+    .timeline-icon {
+        position: absolute;
+        top: 50%;
+        width: 40px;
+        height: 40px;
+        background: var(--primary);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--bg-dark);
+        transform: translateY(-50%);
+        z-index: 2;
+    }
+    
+    .timeline-item:nth-child(odd) .timeline-icon {
+        right: -20px;
+    }
+    
+    .timeline-item:nth-child(even) .timeline-icon {
+        left: -20px;
+    }
+    
+    .timeline-title {
+        font-family: var(--font-heading);
+        font-size: 1.3rem;
+        color: var(--text-primary);
+        margin-bottom: var(--spacing-sm);
+    }
+    
+    .timeline-description {
+        color: var(--text-secondary);
+        line-height: 1.6;
+        margin-bottom: var(--spacing-md);
+    }
+    
+    .timeline-tags {
+        display: flex;
+        gap: var(--spacing-sm);
+        flex-wrap: wrap;
+    }
+    
+    .tag {
+        background: rgba(100, 255, 218, 0.1);
+        color: var(--primary);
+        font-size: 0.8rem;
+        padding: 2px 8px;
+        border-radius: 4px;
+    }
+    
+    .timeline-controls {
+        display: flex;
+        justify-content: center;
+        gap: var(--spacing-md);
+        margin-top: var(--spacing-xl);
+    }
+    
+    @media (max-width: 768px) {
+        .timeline::before {
+            left: 20px;
+        }
+        
+        .timeline-item {
+            flex-direction: column !important;
+            margin-left: 60px;
+        }
+        
+        .timeline-date {
+            flex: none;
+            text-align: left;
+            padding-left: 0;
+            font-size: 1.2rem;
+        }
+        
+        .timeline-content {
+            max-width: 100%;
+        }
+        
+        .timeline-content::before {
+            display: none;
+        }
+        
+        .timeline-icon {
+            left: -60px !important;
+            right: auto !important;
+        }
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const timelineItems = document.querySelectorAll('.timeline-item');
+        const prevBtn = document.getElementById('timeline-prev');
+        const nextBtn = document.getElementById('timeline-next');
+        
+        let currentIndex = 0;
+        
+        // 初始显示
+        function showItem(index) {
+            timelineItems.forEach((item, i) => {
+                if (i <= index) {
+                    item.classList.add('animate-in');
+                } else {
+                    item.classList.remove('animate-in');
+                }
+            });
+        }
+        
+        // 滚动到指定项目
+        function scrollToItem(index) {
+            if (index >= 0 && index < timelineItems.length) {
+                currentIndex = index;
+                showItem(index);
+                
+                timelineItems[index].scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+                
+                // 更新按钮状态
+                prevBtn.disabled = index === 0;
+                nextBtn.disabled = index === timelineItems.length - 1;
+            }
+        }
+        
+        // 绑定按钮事件
+        if (prevBtn && nextBtn) {
+            prevBtn.addEventListener('click', () => {
+                scrollToItem(currentIndex - 1);
+            });
+            
+            nextBtn.addEventListener('click', () => {
+                scrollToItem(currentIndex + 1);
+            });
+        }
+        
+        // 初始状态
+        showItem(0);
+        prevBtn.disabled = true;
+        
+        // 滚动时自动显示
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const index = Array.from(timelineItems).indexOf(entry.target);
+                    if (index > currentIndex) {
+                        currentIndex = index;
+                        showItem(index);
+                    }
+                }
+            });
+        }, { threshold: 0.3 });
+        
+        timelineItems.forEach(item => observer.observe(item));
+        
+        // 键盘导航
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+                e.preventDefault();
+                scrollToItem(currentIndex - 1);
+            } else if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+                e.preventDefault();
+                scrollToItem(currentIndex + 1);
+            }
+        });
+    });
+</script>

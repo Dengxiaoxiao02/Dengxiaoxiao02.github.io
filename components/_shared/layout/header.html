@@ -1,0 +1,216 @@
+<header class="cyber-header">
+    <nav class="nav-container">
+        <div class="nav-logo">
+            <a href="/" class="logo-link">
+                <span class="logo-cyber">◢◤CYBER◥◣</span>
+                <span class="logo-sub">DIGITAL SPACE</span>
+            </a>
+        </div>
+        
+        <div class="nav-menu">
+            <a href="/" class="nav-link active" data-page="home">
+                <i class="fas fa-home"></i>
+                <span>首页</span>
+            </a>
+            <a href="pages/about/" class="nav-link" data-page="about">
+                <i class="fas fa-user-astronaut"></i>
+                <span>关于</span>
+            </a>
+            <a href="pages/portfolio/" class="nav-link" data-page="portfolio">
+                <i class="fas fa-code"></i>
+                <span>作品</span>
+            </a>
+            <a href="pages/blog/" class="nav-link" data-page="blog">
+                <i class="fas fa-blog"></i>
+                <span>博客</span>
+            </a>
+            <a href="pages/lab/" class="nav-link" data-page="lab">
+                <i class="fas fa-flask"></i>
+                <span>实验室</span>
+            </a>
+            <a href="pages/fun/" class="nav-link" data-page="fun">
+                <i class="fas fa-gamepad"></i>
+                <span>趣味</span>
+            </a>
+        </div>
+        
+        <div class="nav-actions">
+            <button class="cyber-btn small" onclick="window.location.href='pages/contact/'" data-page="contact">
+                <i class="fas fa-paper-plane"></i>
+                <span>联系</span>
+            </button>
+            <button class="mobile-menu-toggle" id="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+    
+    <!-- 移动端菜单 -->
+    <div class="mobile-menu" id="mobile-menu">
+        <div class="mobile-menu-header">
+            <div class="mobile-logo">◢◤MENU◥◣</div>
+            <button class="mobile-menu-close" id="mobile-menu-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="mobile-nav-links">
+            <a href="/" class="mobile-nav-link active" data-page="home">
+                <i class="fas fa-home"></i>
+                <span>首页</span>
+            </a>
+            <a href="pages/about/" class="mobile-nav-link" data-page="about">
+                <i class="fas fa-user-astronaut"></i>
+                <span>关于</span>
+            </a>
+            <a href="pages/portfolio/" class="mobile-nav-link" data-page="portfolio">
+                <i class="fas fa-code"></i>
+                <span>作品</span>
+            </a>
+            <a href="pages/blog/" class="mobile-nav-link" data-page="blog">
+                <i class="fas fa-blog"></i>
+                <span>博客</span>
+            </a>
+            <a href="pages/lab/" class="mobile-nav-link" data-page="lab">
+                <i class="fas fa-flask"></i>
+                <span>实验室</span>
+            </a>
+            <a href="pages/fun/" class="mobile-nav-link" data-page="fun">
+                <i class="fas fa-gamepad"></i>
+                <span>趣味</span>
+            </a>
+            <a href="pages/contact/" class="mobile-nav-link" data-page="contact">
+                <i class="fas fa-paper-plane"></i>
+                <span>联系</span>
+            </a>
+        </div>
+        <div class="mobile-theme-toggle">
+            <span>主题:</span>
+            <div class="mobile-theme-options">
+                <button data-theme="cyberpunk" class="mobile-theme-option active">赛博</button>
+                <button data-theme="retro" class="mobile-theme-option">复古</button>
+                <button data-theme="soft" class="mobile-theme-option">柔和</button>
+            </div>
+        </div>
+    </div>
+</header>
+
+<style>
+    /* 移动端样式 */
+    .mobile-menu-toggle {
+        display: none;
+        background: transparent;
+        border: none;
+        color: var(--primary);
+        font-size: 1.5rem;
+        cursor: pointer;
+        padding: var(--spacing-sm);
+    }
+    
+    .mobile-menu {
+        position: fixed;
+        top: 0;
+        right: -300px;
+        width: 300px;
+        height: 100vh;
+        background: var(--bg-dark);
+        border-left: 1px solid var(--border-color);
+        z-index: 1001;
+        transition: right var(--transition-normal);
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .mobile-menu.show {
+        right: 0;
+    }
+    
+    .mobile-menu-header {
+        padding: var(--spacing-lg);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid var(--border-color);
+    }
+    
+    .mobile-logo {
+        color: var(--primary);
+        font-family: var(--font-heading);
+        font-size: 1.2rem;
+    }
+    
+    .mobile-menu-close {
+        background: transparent;
+        border: none;
+        color: var(--text-secondary);
+        font-size: 1.2rem;
+        cursor: pointer;
+    }
+    
+    .mobile-nav-links {
+        flex: 1;
+        padding: var(--spacing-lg);
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-md);
+    }
+    
+    .mobile-nav-link {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-md);
+        color: var(--text-secondary);
+        text-decoration: none;
+        padding: var(--spacing-md);
+        border-radius: var(--border-radius-md);
+        transition: all var(--transition-normal);
+    }
+    
+    .mobile-nav-link:hover,
+    .mobile-nav-link.active {
+        background: rgba(100, 255, 218, 0.1);
+        color: var(--primary);
+    }
+    
+    .mobile-theme-toggle {
+        padding: var(--spacing-lg);
+        border-top: 1px solid var(--border-color);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    
+    .mobile-theme-options {
+        display: flex;
+        gap: var(--spacing-sm);
+    }
+    
+    .mobile-theme-option {
+        padding: var(--spacing-xs) var(--spacing-sm);
+        background: transparent;
+        border: 1px solid var(--border-color);
+        color: var(--text-secondary);
+        border-radius: var(--border-radius-sm);
+        cursor: pointer;
+        font-size: 0.8rem;
+    }
+    
+    .mobile-theme-option.active {
+        background: var(--primary);
+        color: var(--bg-dark);
+        border-color: var(--primary);
+    }
+    
+    @media (max-width: 768px) {
+        .mobile-menu-toggle {
+            display: block;
+        }
+        
+        .nav-menu {
+            display: none;
+        }
+        
+        .nav-actions .cyber-btn span {
+            display: none;
+        }
+    }
+</style>

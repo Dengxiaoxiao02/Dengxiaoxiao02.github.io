@@ -1,0 +1,156 @@
+<section class="cyber-hero">
+    <div class="hero-grid">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="badge-icon">✦</span>
+                <span class="badge-text">CYBER EXPLORER</span>
+            </div>
+            <h1 class="hero-title">
+                <span class="title-line">你好，我是</span>
+                <span class="title-name glitch" data-text="数字旅人">数字旅人</span>
+            </h1>
+            <p class="hero-subtitle">
+                在<span class="highlight">代码</span>与<span class="highlight">设计</span>的边界探索，
+                用<span class="highlight">创造力</span>构建数字未来。
+            </p>
+            <div class="hero-actions">
+                <a href="pages/about/" class="cyber-btn primary">
+                    <i class="fas fa-user-astronaut"></i>
+                    <span>探索更多</span>
+                </a>
+                <a href="pages/portfolio/" class="cyber-btn secondary">
+                    <i class="fas fa-rocket"></i>
+                    <span>查看作品</span>
+                </a>
+                <button class="cyber-btn ghost terminal-toggle">
+                    <i class="fas fa-terminal"></i>
+                    <span>终端模式</span>
+                </button>
+            </div>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <span class="stat-number" data-count="42">0</span>
+                    <span class="stat-label">项目完成</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" data-count="128">0</span>
+                    <span class="stat-label">代码提交</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" data-count="24">0</span>
+                    <span class="stat-label">博客文章</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" data-count="∞">0</span>
+                    <span class="stat-label">无限可能</span>
+                </div>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="cyber-avatar">
+                <div class="avatar-container">
+                    <div class="avatar-image">
+                        <!-- 动态粒子背景 -->
+                        <canvas id="avatar-canvas" class="avatar-canvas"></canvas>
+                    </div>
+                    <div class="avatar-frame">
+                        <div class="frame-corner tl"></div>
+                        <div class="frame-corner tr"></div>
+                        <div class="frame-corner bl"></div>
+                        <div class="frame-corner br"></div>
+                        <div class="frame-glow"></div>
+                    </div>
+                </div>
+                <div class="avatar-status">
+                    <span class="status-dot online"></span>
+                    <span class="status-text">在线 | 灵感迸发中</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="hero-scroll">
+        <div class="scroll-hint">
+            <i class="fas fa-chevron-down"></i>
+            <span>继续探索</span>
+        </div>
+    </div>
+</section>
+
+<script>
+    // 粒子系统
+    document.addEventListener('DOMContentLoaded', function() {
+        const canvas = document.getElementById('avatar-canvas');
+        if (!canvas) return;
+        
+        const ctx = canvas.getContext('2d');
+        const dpr = window.devicePixelRatio || 1;
+        
+        function resizeCanvas() {
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.scale(dpr, dpr);
+        }
+        
+        resizeCanvas();
+        
+        const particles = [];
+        const particleCount = 50;
+        const colors = ['#00ffea', '#ff00ff', '#00ff9d', '#ffd166'];
+        
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width / dpr;
+                this.y = Math.random() * canvas.height / dpr;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedX = Math.random() * 0.5 - 0.25;
+                this.speedY = Math.random() * 0.5 - 0.25;
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+                this.opacity = Math.random() * 0.5 + 0.2;
+            }
+            
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                
+                if (this.x < 0 || this.x > canvas.width / dpr) this.speedX *= -1;
+                if (this.y < 0 || this.y > canvas.height / dpr) this.speedY *= -1;
+            }
+            
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.globalAlpha = this.opacity;
+                ctx.fill();
+                ctx.globalAlpha = 1;
+            }
+        }
+        
+        function initParticles() {
+            particles.length = 0;
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+        }
+        
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+            
+            requestAnimationFrame(animateParticles);
+        }
+        
+        initParticles();
+        animateParticles();
+        
+        window.addEventListener('resize', () => {
+            resizeCanvas();
+            initParticles();
+        });
+    });
+</script>

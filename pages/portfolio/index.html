@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="cyberpunk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>作品集 | 数字旅人</title>
+    <link rel="stylesheet" href="../styles/theme.css">
+    <link rel="stylesheet" href="../styles/global.css">
+    <link rel="stylesheet" href="../styles/components/header.css">
+    <link rel="stylesheet" href="../styles/components/footer.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600&family=Oxanium:wght@300;400;600&family=Orbitron:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script type="module" src="../loader.js" defer></script>
+    <style>
+        .portfolio-hero {
+            min-height: 60vh;
+            padding: calc(var(--spacing-xxl) * 2) var(--spacing-xl) var(--spacing-xxl);
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+        
+        .portfolio-hero h1 {
+            font-family: var(--font-heading);
+            font-size: 3.5rem;
+            color: var(--primary);
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .portfolio-hero p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto var(--spacing-xl);
+        }
+        
+        .filters-section {
+            padding: var(--spacing-xl);
+            background: rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .filters-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-sm);
+            justify-content: center;
+        }
+        
+        .filter-btn {
+            padding: var(--spacing-sm) var(--spacing-lg);
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            font-family: var(--font-body);
+        }
+        
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--primary);
+            color: var(--bg-dark);
+            border-color: var(--primary);
+        }
+        
+        .portfolio-grid {
+            padding: var(--spacing-xxl) var(--spacing-xl);
+        }
+        
+        .projects-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: var(--spacing-xl);
+        }
+        
+        .project-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-lg);
+            overflow: hidden;
+            transition: all var(--transition-normal);
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        .project-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .project-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-glow);
+        }
+        
+        .project-image {
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .project-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform var(--transition-normal);
+        }
+        
+        .project-card:hover .project-image img {
+            transform: scale(1.05);
+        }
+        
+        .project-content {
+            padding: var(--spacing-lg);
+        }
+        
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .project-title {
+            font-family: var(--font-heading);
+            font-size: 1.3rem;
+            color: var(--text-primary);
+            margin: 0;
+        }
+        
+        .project-year {
+            font-size: 0.9rem;
+            color: var(--primary);
+            background: rgba(100, 255, 218, 0.1);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+        
+        .project-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .project-tech {
+            display: flex;
+            gap: var(--spacing-sm);
+            flex-wrap: wrap;
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .tech-tag {
+            font-size: 0.8rem;
+            background: rgba(100, 255, 218, 0.1);
+            color: var(--primary);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+        
+        .project-links {
+            display: flex;
+            gap: var(--spacing-md);
+        }
+        
+        .project-link {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all var(--transition-normal);
+        }
+        
+        .project-link:hover {
+            color: var(--primary);
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: var(--spacing-xxl);
+            color: var(--text-muted);
+            grid-column: 1 / -1;
+        }
+        
+        .portfolio-stats {
+            padding: var(--spacing-xxl) var(--spacing-xl);
+            background: rgba(0, 0, 0, 0.3);
+        }
+        
+        .stats-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-xl);
+        }
+        
+        .stat-card {
+            text-align: center;
+            padding: var(--spacing-lg);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-lg);
+        }
+        
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto var(--spacing-md);
+            background: rgba(100, 255, 218, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+        
+        .stat-value {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: var(--spacing-xs);
+        }
+        
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .portfolio-hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 霓虹网格背景 -->
+    <div class="neon-grid-bg">
+        <div class="grid-line"></div>
+        <div class="grid-line"></div>
+        <div class="grid-line"></div>
+    </div>
+
+    <!-- CRT扫描线效果 -->
+    <div class="crt-scanlines"></div>
+
+    <div id="app" class="app-container">
+        <!-- 头部导航将通过loader.js动态加载 -->
+        <main class="main-content">
+            <!-- 作品集Hero区域 -->
+            <section class="portfolio-hero">
+                <div class="hero-container">
+                    <h1>创意作品集</h1>
+                    <p>探索我在前端开发、UI设计和创意编程领域的项目实践。每个作品都是技术与美学的结合。</p>
+                    <div class="hero-actions">
+                        <button class="cyber-btn primary" id="scroll-to-projects">
+                            <i class="fas fa-code"></i>
+                            <span>浏览项目</span>
+                        </button>
+                        <button class="cyber-btn ghost" id="view-all-btn">
+                            <i class="fas fa-filter"></i>
+                            <span>查看全部</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 项目筛选 -->
+            <section class="filters-section">
+                <div class="filters-container">
+                    <h3>项目分类</h3>
+                    <div class="filter-group">
+                        <button class="filter-btn active" data-filter="all">全部项目</button>
+                        <button class="filter-btn" data-filter="web">Web应用</button>
+                        <button class="filter-btn" data-filter="design">UI设计</button>
+                        <button class="filter-btn" data-filter="creative">创意编程</button>
+                        <button class="filter-btn" data-filter="tools">开发工具</button>
+                        <button class="filter-btn" data-filter="experimental">实验项目</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 项目网格 -->
+            <section class="portfolio-grid">
+                <div class="projects-container">
+                    <div class="projects-grid" id="projects-grid">
+                        <!-- 项目卡片将通过JavaScript动态生成 -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- 项目统计 -->
+            <section class="portfolio-stats">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <div class="stat-value" data-count="12">0</div>
+                        <div class="stat-label">完成项目</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-language"></i>
+                        </div>
+                        <div class="stat-value" data-count="8">0</div>
+                        <div class="stat-label">技术栈</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-value" data-count="5">0</div>
+                        <div class="stat-label">协作项目</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="stat-value" data-count="3">0</div>
+                        <div class="stat-label">奖项荣誉</div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <!-- 页脚将通过loader.js动态加载 -->
+    </div>
+
+    <!-- 返回顶部按钮 -->
+    <button id="back-to-top" class="back-to-top-btn" aria-label="返回顶部">
+        <i class="fas fa-chevron-up"></i>
+        <span class="btn-text">TOP</span>
+    </button>
+
+    <!-- 系统通知 -->
+    <div id="system-notification" class="system-notification">
+        <div class="notification-content">
+            <i class="fas fa-terminal"></i>
+            <span class="notification-text"></span>
+        </div>
+    </div>
+
+    <script src="../scripts/app.js" defer></script>
+    <script>
+        // 项目数据
+        const projects = [
+            {
+                id: 1,
+                title: "Cyber Dashboard",
+                year: 2024,
+                description: "现代化的仪表板界面，结合实时数据可视化与交互式图表，采用响应式设计。",
+                image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600",
+                category: "web",
+                technologies: ["Vue.js", "D3.js", "TypeScript", "Tailwind CSS"],
+                liveUrl: "#",
+                codeUrl: "#"
+            },
+            {
+                id: 2,
+                title: "Neon Gallery",
+                year: 2023,
+                description: "互动式艺术画廊网站，展示生成艺术与数字媒体作品，具有沉浸式浏览体验。",
+                image: "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?w=600",
+                category: "design",
+                technologies: ["Three.js", "GSAP", "WebGL", "GLSL"],
+                liveUrl: "#",
+                codeUrl: "#"
+            },
+            {
+                id: 3,
+                title: "Code Visualizer",
+                year: 2023,
+                description: "代码执行可视化工具，实时展示算法执行过程，帮助理解复杂的数据结构与算法。",
+                image: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=600",
+                category: "tools",
+                technologies: ["React", "Python", "WebSocket", "Canvas"],
+                liveUrl: "#",
+                codeUrl: "#"
+            },
+            {
+                id: 4,
+                title: "Particle System",
+                year: 2024,
+                description: "基于WebGL的粒子系统实验，模拟物理效果与视觉特效，支持实时参数调整。",
+                image: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=600",
+                category: "creative",
+                technologies: ["WebGL", "GLSL", "p5.js", "Shader"],
+                liveUrl: "#",
+                codeUrl: "#"
+            },
+            {
+                id: 5,
+                title: "UI Design System",
+                year: 2023,
+                description: "完整的设计系统，包含组件库、设计规范与设计工具集成，提升团队协作效率。",
+                image: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=600",
+                category: "design",
+                technologies: ["Figma", "Storybook", "Design Tokens"],
+                liveUrl: "#",
+                codeUrl: "#"
+            },
+            {
+                id: 6,
+                title: "API Playground",
+                year: 2024,
+                description: "交互式API测试工具，支持REST、GraphQL和WebSocket协议，具有实时响应展示。",
+                image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=600",
+                category: "tools",
+                technologies: ["Next.js", "GraphQL", "WebSocket", "Monaco Editor"],
+                liveUrl: "#",
+                codeUrl: "#"
+            },
+            {
+                id: 7,
+                title: "Generative Art",
+                year: 2023,
+                description: "基于算法的生成艺术作品，探索代码与艺术的结合，每次生成都是独一无二的。",
+                image: "https://images.unsplash.com/photo-1542744095-fcf48d80b0fd?w=600",
+                category: "creative",
+                technologies: ["p5.js", "Generative Algorithms", "SVG"],
+                liveUrl: "#",
+                codeUrl: "#"
+            },
+            {
+                id: 8,
+                title: "E-commerce Platform",
+                year: 2023,
+                description: "现代化电商平台前端，包含商品展示、购物车、支付流程与用户管理系统。",
+                image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600",
+                category: "web",
+                technologies: ["Vue.js", "Pinia", "Vue Router", "Vite"],
+                liveUrl: "#",
+                codeUrl: "#"
+            },
+            {
+                id: 9,
+                title: "Audio Visualizer",
+                year: 2024,
+                description: "音频可视化实验项目，将声音转化为动态视觉效果，支持自定义音频输入。",
+                image: "https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=600",
+                category: "experimental",
+                technologies: ["Web Audio API", "Canvas", "FFT", "p5.js"],
+                liveUrl: "#",
+                codeUrl: "#"
+            }
+        ];
+
+        // 渲染项目卡片
+        function renderProjects(filter = 'all') {
+            const grid = document.getElementById('projects-grid');
+            const filteredProjects = filter === 'all' 
+                ? projects 
+                : projects.filter(project => project.category === filter);
+            
+            grid.innerHTML = '';
+            
+            if (filteredProjects.length === 0) {
+                grid.innerHTML = '<div class="no-results">没有找到相关项目</div>';
+                return;
+            }
+            
+            filteredProjects.forEach(project => {
+                const projectCard = document.createElement('div');
+                projectCard.className = 'project-card';
+                projectCard.dataset.category = project.category;
+                
+                projectCard.innerHTML = `
+                    <div class="project-image">
+                        <img src="${project.image}" alt="${project.title}" loading="lazy">
+                    </div>
+                    <div class="project-content">
+                        <div class="project-header">
+                            <h3 class="project-title">${project.title}</h3>
+                            <span class="project-year">${project.year}</span>
+                        </div>
+                        <p class="project-description">${project.description}</p>
+                        <div class="project-tech">
+                            ${project.technologies.map(tech => `<span class="tech-tag">${tech}</span>`).join('')}
+                        </div>
+                        <div class="project-links">
+                            <a href="${project.liveUrl}" class="project-link" target="_blank" rel="noopener">
+                                <i class="fas fa-external-link-alt"></i>
+                                <span>查看演示</span>
+                            </a>
+                            <a href="${project.codeUrl}" class="project-link" target="_blank" rel="noopener">
+                                <i class="fab fa-github"></i>
+                                <span>查看代码</span>
+                            </a>
+                        </div>
+                    </div>
+                `;
+                
+                grid.appendChild(projectCard);
+            });
+            
+            // 触发滚动动画
+            setTimeout(() => {
+                document.querySelectorAll('.project-card').forEach(card => {
+                    card.classList.add('visible');
+                });
+            }, 100);
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            // 渲染所有项目
+            renderProjects();
+            
+            // 筛选按钮事件
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const filter = button.dataset.filter;
+                    
+                    // 更新按钮状态
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    
+                    // 渲染筛选后的项目
+                    renderProjects(filter);
+                    
+                    // 显示通知
+                    const notification = document.getElementById('system-notification');
+                    const text = notification.querySelector('.notification-text');
+                    text.textContent = `显示${filter === 'all' ? '所有' : filter}项目`;
+                    notification.classList.add('show');
+                    
+                    setTimeout(() => {
+                        notification.classList.remove('show');
+                    }, 2000);
+                });
+            });
+            
+            // 查看全部按钮
+            const viewAllBtn = document.getElementById('view-all-btn');
+            if (viewAllBtn) {
+                viewAllBtn.addEventListener('click', () => {
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    filterButtons[0].classList.add('active');
+                    renderProjects('all');
+                    
+                    // 滚动到项目区域
+                    document.querySelector('.portfolio-grid').scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            }
+            
+            // 滚动到项目按钮
+            const scrollToProjects = document.getElementById('scroll-to-projects');
+            if (scrollToProjects) {
+                scrollToProjects.addEventListener('click', () => {
+                    document.querySelector('.filters-section').scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            }
+            
+            // 数字统计动画
+            const statValues = document.querySelectorAll('.stat-value');
+            statValues.forEach(stat => {
+                const target = parseInt(stat.dataset.count);
+                let current = 0;
+                const increment = Math.ceil(target / 50);
+                
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                    }
+                    stat.textContent = current;
+                }, 30);
+            });
+        });
+    </script>
+</body>
+</html>

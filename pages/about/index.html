@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="cyberpunk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>关于我 | 数字旅人</title>
+    <link rel="stylesheet" href="../styles/theme.css">
+    <link rel="stylesheet" href="../styles/global.css">
+    <link rel="stylesheet" href="../styles/components/header.css">
+    <link rel="stylesheet" href="../styles/components/footer.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600&family=Oxanium:wght@300;400;600&family=Orbitron:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script type="module" src="../loader.js" defer></script>
+    <style>
+        .about-hero {
+            min-height: 60vh;
+            padding: calc(var(--spacing-xxl) * 2) var(--spacing-xl) var(--spacing-xxl);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .about-hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .about-hero h1 {
+            font-family: var(--font-heading);
+            font-size: 3.5rem;
+            color: var(--primary);
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .about-hero p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        .about-section {
+            padding: var(--spacing-xxl) var(--spacing-xl);
+        }
+        
+        .about-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-xxl);
+            align-items: center;
+        }
+        
+        .about-image {
+            position: relative;
+        }
+        
+        .about-img-frame {
+            width: 100%;
+            height: 400px;
+            border: 2px solid var(--primary);
+            border-radius: var(--border-radius-lg);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .about-img-frame::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            opacity: 0.3;
+            mix-blend-mode: overlay;
+        }
+        
+        .about-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-xl);
+        }
+        
+        .stat-box {
+            text-align: center;
+            padding: var(--spacing-md);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-md);
+        }
+        
+        .stat-number {
+            display: block;
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        
+        .interests-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-xl);
+        }
+        
+        .interest-card {
+            text-align: center;
+            padding: var(--spacing-lg);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-lg);
+            transition: all var(--transition-normal);
+        }
+        
+        .interest-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-4px);
+        }
+        
+        .interest-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto var(--spacing-md);
+            background: rgba(100, 255, 218, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+        
+        .values-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-xxl);
+            margin: var(--spacing-xxl) 0;
+        }
+        
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-lg);
+        }
+        
+        .value-item {
+            padding: var(--spacing-lg);
+        }
+        
+        .value-number {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            color: var(--bg-dark);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-heading);
+            font-weight: 600;
+            margin-bottom: var(--spacing-md);
+        }
+        
+        @media (max-width: 768px) {
+            .about-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .about-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 加载界面 -->
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="loading-content">
+            <div class="loading-logo">
+                <div class="logo-cyber">
+                    <span class="logo-char">A</span>
+                    <span class="logo-char">B</span>
+                    <span class="logo-char">O</span>
+                    <span class="logo-char">U</span>
+                    <span class="logo-char">T</span>
+                </div>
+            </div>
+            <div class="loading-progress">
+                <div class="progress-bar">
+                    <div class="progress-fill" data-progress="0"></div>
+                </div>
+                <div class="loading-text">
+                    <span class="loading-status">LOADING PERSONA...</span>
+                    <span class="loading-percent">0%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主容器 -->
+    <div id="app" class="app-container" style="opacity: 0;">
+        <!-- 内容将通过loader.js动态加载 -->
+        <main class="main-content">
+            <div id="content-container"></div>
+        </main>
+    </div>
+
+    <script>
+        // 自定义加载器
+        class AboutPageLoader {
+            constructor() {
+                this.init();
+            }
+            
+            async init() {
+                await this.simulateLoading();
+                await this.loadContent();
+                this.initAnimations();
+            }
+            
+            async simulateLoading() {
+                const progressFill = document.querySelector('.progress-fill');
+                const loadingStatus = document.querySelector('.loading-status');
+                const loadingPercent = document.querySelector('.loading-percent');
+                const loadingOverlay = document.getElementById('loading-overlay');
+                const appContainer = document.getElementById('app');
+                
+                const steps = [
+                    { text: 'LOADING PERSONA DATA...', progress: 20 },
+                    { text: 'INITIALIZING BIOGRAPHY...', progress: 40 },
+                    { text: 'LOADING EXPERIENCES...', progress: 60 },
+                    { text: 'COMPILING SKILLS...', progress: 80 },
+                    { text: 'SYSTEM READY!', progress: 100 }
+                ];
+                
+                let currentProgress = 0;
+                
+                for (const step of steps) {
+                    loadingStatus.textContent = step.text;
+                    
+                    for (let i = currentProgress; i <= step.progress; i++) {
+                        progressFill.style.width = `${i}%`;
+                        loadingPercent.textContent = `${i}%`;
+                        await this.delay(20);
+                    }
+                    
+                    currentProgress = step.progress;
+                }
+                
+                loadingOverlay.style.opacity = '0';
+                await this.delay(300);
+                loadingOverlay.style.display = 'none';
+                appContainer.style.opacity = '1';
+            }
+            
+            async loadContent() {
+                const container = document.getElementById('content-container');
+                if (!container) return;
+                
+                container.innerHTML = `
+                    <!-- Hero区域 -->
+                    <section class="about-hero">
+                        <div class="about-hero-content">
+                            <h1 class="glitch" data-text="关于我">关于我</h1>
+                            <p>我是 <span class="highlight">数字旅人</span>，一个在代码与设计边界探索的创作者。我相信科技应该是有温度的，设计应该是可触达的，而代码应该是充满诗意的。</p>
+                            <p>在数字世界中漫游，用<span class="highlight">创造力</span>构建，用<span class="highlight">好奇心</span>探索，用<span class="highlight">热情</span>实现。</p>
+                        </div>
+                    </section>
+                    
+                    <!-- 个人信息 -->
+                    <section class="about-section">
+                        <div class="about-container">
+                            <div class="about-grid">
+                                <div class="about-image">
+                                    <div class="about-img-frame">
+                                        <!-- 这里可以放置图片或动画 -->
+                                        <div class="particle-container" style="width: 100%; height: 100%;"></div>
+                                    </div>
+                                </div>
+                                <div class="about-content">
+                                    <h2>你好，旅行者</h2>
+                                    <p>我是一个全栈开发者兼UI/UX设计师，专注于创造美观、实用且富有表现力的数字体验。我相信好的设计不仅仅是看起来漂亮，更要解决问题、传递价值。</p>
+                                    <p>我的旅程始于2018年，从一个对代码充满好奇的学生，成长为能够在数字世界中创造价值的探索者。这个过程中，我学会了不仅仅是写代码，更是思考如何用技术让世界变得更美好。</p>
+                                    
+                                    <div class="about-stats">
+                                        <div class="stat-box">
+                                            <span class="stat-number" data-count="5">0</span>
+                                            <span class="stat-label">年经验</span>
+                                        </div>
+                                        <div class="stat-box">
+                                            <span class="stat-number" data-count="50">0</span>
+                                            <span class="stat-label">个项目</span>
+                                        </div>
+                                        <div class="stat-box">
+                                            <span class="stat-number" data-count="100">0</span>
+                                            <span class="stat-label">% 热情</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <!-- 兴趣领域 -->
+                    <section class="about-section">
+                        <div class="about-container">
+                            <h2 style="text-align: center; margin-bottom: var(--spacing-xl);">我的兴趣领域</h2>
+                            <div class="interests-grid">
+                                <div class="interest-card">
+                                    <div class="interest-icon">
+                                        <i class="fas fa-code"></i>
+                                    </div>
+                                    <h3>创意编程</h3>
+                                    <p>探索代码的艺术性，用程序创造视觉和交互的奇迹</p>
+                                </div>
+                                
+                                <div class="interest-card">
+                                    <div class="interest-icon">
+                                        <i class="fas fa-gamepad"></i>
+                                    </div>
+                                    <h3>交互设计</h3>
+                                    <p>创造沉浸式的用户体验，让技术变得触手可及</p>
+                                </div>
+                                
+                                <div class="interest-card">
+                                    <div class="interest-icon">
+                                        <i class="fas fa-paint-brush"></i>
+                                    </div>
+                                    <h3>生成艺术</h3>
+                                    <p>在算法与美学的交汇处，寻找无限的可能性</p>
+                                </div>
+                                
+                                <div class="interest-card">
+                                    <div class="interest-icon">
+                                        <i class="fas fa-vr-cardboard"></i>
+                                    </div>
+                                    <h3>扩展现实</h3>
+                                    <p>探索虚拟与现实的边界，创造全新的交互维度</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <!-- 价值观 -->
+                    <section class="about-section">
+                        <div class="about-container">
+                            <div class="values-section">
+                                <h2 style="text-align: center; margin-bottom: var(--spacing-xl);">我的信念与价值观</h2>
+                                <div class="values-grid">
+                                    <div class="value-item">
+                                        <span class="value-number">01</span>
+                                        <h3>用户为中心</h3>
+                                        <p>技术服务于人。每一个决策，每一行代码，都应该以提升用户体验为目标。</p>
+                                    </div>
+                                    
+                                    <div class="value-item">
+                                        <span class="value-number">02</span>
+                                        <h3>持续学习</h3>
+                                        <p>在这个快速变化的时代，保持好奇心和学习能力是最重要的技能。</p>
+                                    </div>
+                                    
+                                    <div class="value-item">
+                                        <span class="value-number">03</span>
+                                        <h3>品质至上</h3>
+                                        <p>细节决定成败。追求卓越，不满足于"够用"，而是要做到"极致"。</p>
+                                    </div>
+                                    
+                                    <div class="value-item">
+                                        <span class="value-number">04</span>
+                                        <h3>开放协作</h3>
+                                        <p>相信集体的智慧。分享知识，互相学习，共同成长。</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <!-- 技能展示 -->
+                    <section class="about-section">
+                        <div class="about-container">
+                            <h2 style="text-align: center; margin-bottom: var(--spacing-xl);">技术栈</h2>
+                            
+                            <div class="skills-category">
+                                <h3>前端开发</h3>
+                                <div class="skills-grid">
+                                    <div class="skill-item">
+                                        <span class="skill-name">HTML5/CSS3</span>
+                                        <div class="skill-bar-container">
+                                            <div class="skill-bar" data-level="95"></div>
+                                        </div>
+                                        <span class="skill-percent">95%</span>
+                                    </div>
+                                    
+                                    <div class="skill-item">
+                                        <span class="skill-name">JavaScript/ES6+</span>
+                                        <div class="skill-bar-container">
+                                            <div class="skill-bar" data-level="90"></div>
+                                        </div>
+                                        <span class="skill-percent">90%</span>
+                                    </div>
+                                    
+                                    <div class="skill-item">
+                                        <span class="skill-name">Vue.js</span>
+                                        <div class="skill-bar-container">
+                                            <div class="skill-bar" data-level="85"></div>
+                                        </div>
+                                        <span class="skill-percent">85%</span>
+                                    </div>
+                                    
+                                    <div class="skill-item">
+                                        <span class="skill-name">React</span>
+                                        <div class="skill-bar-container">
+                                            <div class="skill-bar" data-level="80"></div>
+                                        </div>
+                                        <span class="skill-percent">80%</span>
+                                    </div>
+                                    
+                                    <div class="skill-item">
+                                        <span class="skill-name">TypeScript</span>
+                                        <div class="skill-bar-container">
+                                            <div class="skill-bar" data-level="75"></div>
+                                        </div>
+                                        <span class="skill-percent">75%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="skills-category">
+                                <h3>设计工具</h3>
+                                <div class="skills-grid">
+                                    <div class="skill-item">
+                                        <span class="skill-name">Figma</span>
+                                        <div class="skill-bar-container">
+                                            <div class="skill-bar" data-level="90"></div>
+                                        </div>
+                                        <span class="skill-percent">90%</span>
+                                    </div>
+                                    
+                                    <div class="skill-item">
+                                        <span class="skill-name">Adobe Creative Suite</span>
+                                        <div class="skill-bar-container">
+                                            <div class="skill-bar" data-level="85"></div>
+                                        </div>
+                                        <span class="skill-percent">85%</span>
+                                    </div>
+                                    
+                                    <div class="skill-item">
+                                        <span class="skill-name">Blender</span>
+                                        <div class="skill-bar-container">
+                                            <div class="skill-bar" data-level="70"></div>
+                                        </div>
+                                        <span class="skill-percent">70%</span>
+                                    </div>
+                                    
+                                    <div class="skill-item">
+                                        <span class="skill-name">After Effects</span>
+                                        <div class="skill-bar-container">
+                                            <div class="skill-bar" data-level="65"></div>
+                                        </div>
+                                        <span class="skill-percent">65%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="skills-category">
+                                <h3>创意编程</h3>
+                                <div class="skills-grid">
+                                    <div class="skill-item">
+                                        <span class="skill-name">p5.js</span>
+                                        <div class="skill-bar-container">
+                                            <div class="skill-bar" data-level="80"></div>
+                                        </div>
+                                        <span class="skill-percent">80%</span>
+                                    </div>
+                                    
+                                    <div class="skill-item">
+                                        <span class="skill-name">Three.js</span>
+                                        <div class="skill-bar-container">
+                                            <div class="skill-bar" data-level="75"></div>
+                                        </div>
+                                        <span class="skill-percent">75%</span>
+                                    </div>
+                                    
+                                    <div class="skill-item">
+                                        <span class="skill-name">WebGL/GLSL</span>
+                                        <div class="skill-bar-container">
+                                            <div class="skill-bar" data-level="60"></div>
+                                        </div>
+                                        <span class="skill-percent">60%</span>
+                                    </div>
+                                    
+                                    <div class="skill-item">
+                                        <span class="skill-name">Processing</span>
+                                        <div class="skill-bar-container">
+                                            <div class="skill-bar" data-level="70"></div>
+                                        </div>
+                                        <span class="skill-percent">70%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <!-- 时间线 -->
+                    <section class="about-section">
+                        <div class="about-container">
+                            <h2 style="text-align: center; margin-bottom: var(--spacing-xl);">我的旅程</h2>
+                            <div class="timeline">
+                                <div class="timeline-item">
+                                    <div class="timeline-date">2018</div>
+                                    <div class="timeline-content">
+                                        <h3>旅程开始</h3>
+                                        <p>第一次接触编程，被代码创造世界的可能性深深吸引。开始学习HTML、CSS和JavaScript。</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="timeline-item">
+                                    <div class="timeline-date">2019</div>
+                                    <div class="timeline-content">
+                                        <h3>第一个项目</h3>
+                                        <p>完成第一个完整的Web应用，开始理解用户体验和界面设计的重要性。</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="timeline-item">
+                                    <div class="timeline-date">2020</div>
+                                    <div class="timeline-content">
+                                        <h3>深入探索</h3>
+                                        <p>系统学习前端框架(Vue.js, React)和设计工具(Figma, Adobe Suite)。</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="timeline-item">
+                                    <div class="timeline-date">2021</div>
+                                    <div class="timeline-content">
+                                        <h3>创意编程</h3>
+                                        <p>发现生成艺术和创意编程的世界，开始探索代码的艺术表达。</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="timeline-item">
+                                    <div class="timeline-date">2022</div>
+                                    <div class="timeline-content">
+                                        <h3>专业成长</h3>
+                                        <p>参与多个商业项目，积累实战经验，开始建立个人品牌和作品集。</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="timeline-item">
+                                    <div class="timeline-date">2023 - 至今</div>
+                                    <div class="timeline-content">
+                                        <h3>持续创造</h3>
+                                        <p>探索新技术(WebGL, WebAssembly, AI)，创建个人实验项目，分享知识。</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <!-- 联系CTA -->
+                    <section class="about-section">
+                        <div class="about-container">
+                            <div class="cta-container" style="background: rgba(100, 255, 218, 0.1); border-radius: var(--border-radius-lg); padding: var(--spacing-xxl); text-align: center;">
+                                <h2>想聊聊吗？</h2>
+                                <p>无论你是对某个项目感兴趣，想要合作，还是只是想聊聊技术和创意，我都非常欢迎！</p>
+                                <div class="cta-actions" style="justify-content: center; margin-top: var(--spacing-xl);">
+                                    <a href="../pages/contact/" class="cyber-btn primary large">
+                                        <i class="fas fa-paper-plane"></i>
+                                        <span>发送消息</span>
+                                    </a>
+                                    <a href="../pages/portfolio/" class="cyber-btn secondary large">
+                                        <i class="fas fa-eye"></i>
+                                        <span>查看作品</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                `;
+                
+                // 加载粒子系统
+                this.initParticleSystem();
+                
+                // 数字动画
+                this.animateNumbers();
+                
+                // 技能条动画
+                this.initSkillBars();
+            }
+            
+            initParticleSystem() {
+                const container = document.querySelector('.particle-container');
+                if (!container) return;
+                
+                const particleCount = 20;
+                const colors = ['#00ffea', '#ff00ff', '#00ff9d'];
+                
+                for (let i = 0; i < particleCount; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    
+                    const size = Math.random() * 3 + 1;
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+                    const x = Math.random() * 100;
+                    const y = Math.random() * 100;
+                    const duration = Math.random() * 4 + 2;
+                    const delay = Math.random() * 2;
+                    
+                    particle.style.cssText = `
+                        position: absolute;
+                        width: ${size}px;
+                        height: ${size}px;
+                        background: ${color};
+                        border-radius: 50%;
+                        left: ${x}%;
+                        top: ${y}%;
+                        opacity: ${Math.random() * 0.3 + 0.1};
+                        animation: float ${duration}s ease-in-out infinite;
+                        animation-delay: ${delay}s;
+                        filter: blur(1px);
+                    `;
+                    
+                    container.appendChild(particle);
+                }
+            }
+            
+            animateNumbers() {
+                const counters = document.querySelectorAll('.stat-number');
+                counters.forEach(counter => {
+                    const target = parseInt(counter.dataset.count);
+                    const duration = 2000;
+                    const startTime = Date.now();
+                    
+                    const animate = () => {
+                        const currentTime = Date.now();
+                        const elapsed = currentTime - startTime;
+                        const progress = Math.min(elapsed / duration, 1);
+                        
+                        const value = Math.floor(progress * target);
+                        counter.textContent = value;
+                        
+                        if (progress < 1) {
+                            requestAnimationFrame(animate);
+                        }
+                    };
+                    
+                    // 延迟开始动画
+                    setTimeout(animate, 500);
+                });
+            }
+            
+            initSkillBars() {
+                const skillBars = document.querySelectorAll('.skill-bar');
+                
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const skillBar = entry.target;
+                            const level = skillBar.dataset.level;
+                            
+                            skillBar.style.width = '0%';
+                            
+                            setTimeout(() => {
+                                skillBar.style.width = level + '%';
+                            }, 300);
+                            
+                            observer.unobserve(skillBar);
+                        }
+                    });
+                }, { threshold: 0.5 });
+                
+                skillBars.forEach(bar => observer.observe(bar));
+            }
+            
+            initAnimations() {
+                // 时间线动画
+                const timelineItems = document.querySelectorAll('.timeline-item');
+                
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('animate-in');
+                        }
+                    });
+                }, { threshold: 0.1 });
+                
+                timelineItems.forEach(item => observer.observe(item));
+                
+                // 兴趣卡片动画
+                const interestCards = document.querySelectorAll('.interest-card');
+                interestCards.forEach((card, index) => {
+                    card.style.setProperty('--delay', `${index * 0.1}s`);
+                    observer.observe(card);
+                });
+            }
+            
+            delay(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+        }
+        
+        // 初始化页面
+        document.addEventListener('DOMContentLoaded', () => {
+            new AboutPageLoader();
+            
+            // 添加样式
+            const style = document.createElement('style');
+            style.textContent = `
+                .skills-category {
+                    margin-bottom: var(--spacing-xl);
+                }
+                
+                .skills-category h3 {
+                    color: var(--primary);
+                    margin-bottom: var(--spacing-md);
+                    font-family: var(--font-heading);
+                }
+                
+                .skills-grid {
+                    display: flex;
+                    flex-direction: column;
+                    gap: var(--spacing-md);
+                }
+                
+                .skill-item {
+                    display: grid;
+                    grid-template-columns: 150px 1fr 60px;
+                    align-items: center;
+                    gap: var(--spacing-md);
+                }
+                
+                .skill-name {
+                    color: var(--text-secondary);
+                }
+                
+                .skill-bar-container {
+                    height: 8px;
+                    background: var(--bg-gray);
+                    border-radius: 4px;
+                    overflow: hidden;
+                }
+                
+                .skill-bar {
+                    height: 100%;
+                    background: linear-gradient(90deg, var(--primary), var(--secondary));
+                    border-radius: 4px;
+                    width: 0;
+                    transition: width 1.5s ease;
+                }
+                
+                .skill-percent {
+                    text-align: right;
+                    color: var(--primary);
+                    font-family: var(--font-body);
+                    font-weight: 600;
+                }
+                
+                .timeline {
+                    position: relative;
+                    max-width: 800px;
+                    margin: 0 auto;
+                }
+                
+                .timeline::before {
+                    content: '';
+                    position: absolute;
+                    left: 30px;
+                    top: 0;
+                    bottom: 0;
+                    width: 2px;
+                    background: var(--border-color);
+                }
+                
+                .timeline-item {
+                    display: grid;
+                    grid-template-columns: 60px 1fr;
+                    gap: var(--spacing-lg);
+                    margin-bottom: var(--spacing-xl);
+                    position: relative;
+                    opacity: 0;
+                    transform: translateX(-20px);
+                    transition: all 0.6s ease;
+                }
+                
+                .timeline-item.animate-in {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+                
+                .timeline-item::before {
+                    content: '';
+                    position: absolute;
+                    left: 24px;
+                    top: 0;
+                    width: 12px;
+                    height: 12px;
+                    background: var(--primary);
+                    border-radius: 50%;
+                    z-index: 1;
+                }
+                
+                .timeline-date {
+                    text-align: right;
+                    color: var(--primary);
+                    font-family: var(--font-heading);
+                    font-weight: 600;
+                }
+                
+                .timeline-content {
+                    padding: var(--spacing-md);
+                    background: rgba(255, 255, 255, 0.05);
+                    border: 1px solid var(--border-color);
+                    border-radius: var(--border-radius-md);
+                }
+                
+                .timeline-content h3 {
+                    color: var(--text-primary);
+                    margin-bottom: var(--spacing-sm);
+                }
+                
+                .interest-card {
+                    opacity: 0;
+                    transform: translateY(20px);
+                    transition: all 0.6s ease var(--delay, 0s);
+                }
+                
+                .interest-card.animate-in {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+                
+                @media (max-width: 768px) {
+                    .skill-item {
+                        grid-template-columns: 1fr;
+                        gap: var(--spacing-sm);
+                    }
+                    
+                    .timeline {
+                        padding-left: 20px;
+                    }
+                    
+                    .timeline::before {
+                        left: 10px;
+                    }
+                    
+                    .timeline-item {
+                        grid-template-columns: 1fr;
+                    }
+                    
+                    .timeline-item::before {
+                        left: 4px;
+                    }
+                    
+                    .timeline-date {
+                        text-align: left;
+                        order: 2;
+                        margin-top: var(--spacing-sm);
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
+</body>
+</html>

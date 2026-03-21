@@ -1,0 +1,579 @@
+<!-- 赛博风格卡片组件 -->
+<div class="cyber-cards-demo">
+    <h3>卡片组件库</h3>
+    
+    <div class="card-showcase">
+        <!-- 基础卡片 -->
+        <div class="cyber-card">
+            <div class="card-header">
+                <div class="card-icon">
+                    <i class="fas fa-star"></i>
+                </div>
+                <h4 class="card-title">基础卡片</h4>
+                <span class="card-badge">NEW</span>
+            </div>
+            <div class="card-content">
+                <p>这是一个基础的赛博风格卡片，包含标题、内容和操作区域。</p>
+            </div>
+            <div class="card-actions">
+                <button class="cyber-btn small">操作一</button>
+                <button class="cyber-btn ghost small">操作二</button>
+            </div>
+        </div>
+        
+        <!-- 图片卡片 -->
+        <div class="cyber-card image-card">
+            <div class="card-image">
+                <img src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400" alt="赛博城市">
+                <div class="image-overlay">
+                    <span class="image-label">CYBERPUNK</span>
+                </div>
+            </div>
+            <div class="card-content">
+                <h4 class="card-title">图片卡片</h4>
+                <p>带有图片预览的卡片，适合展示作品或项目。</p>
+                <div class="card-meta">
+                    <span><i class="far fa-clock"></i> 2小时前</span>
+                    <span><i class="far fa-eye"></i> 256</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 特性卡片 -->
+        <div class="cyber-card feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-bolt"></i>
+                <div class="icon-glow"></div>
+            </div>
+            <h4 class="card-title">高性能</h4>
+            <div class="card-content">
+                <p>极致的性能优化，闪电般的响应速度。</p>
+                <div class="feature-stats">
+                    <div class="stat">
+                        <span class="stat-value">99.9%</span>
+                        <span class="stat-label">可用性</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">50ms</span>
+                        <span class="stat-label">响应</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 数据卡片 -->
+        <div class="cyber-card data-card">
+            <div class="card-header">
+                <h4 class="card-title">系统状态</h4>
+                <div class="card-status online"></div>
+            </div>
+            <div class="card-content">
+                <div class="data-grid">
+                    <div class="data-item">
+                        <span class="data-label">CPU 使用</span>
+                        <div class="data-progress">
+                            <div class="progress-bar" style="width: 65%"></div>
+                        </div>
+                        <span class="data-value">65%</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">内存</span>
+                        <div class="data-progress">
+                            <div class="progress-bar" style="width: 42%"></div>
+                        </div>
+                        <span class="data-value">42%</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">存储</span>
+                        <div class="data-progress">
+                            <div class="progress-bar" style="width: 78%"></div>
+                        </div>
+                        <span class="data-value">78%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 交互卡片 -->
+        <div class="cyber-card interactive-card">
+            <div class="card-header">
+                <h4 class="card-title">交互演示</h4>
+                <button class="card-toggle">
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+            </div>
+            <div class="card-content">
+                <p>点击切换按钮展开/收起内容区域。</p>
+                <div class="card-expandable">
+                    <p>这是可展开的隐藏内容。可以在这里放置详细信息。</p>
+                    <div class="expandable-actions">
+                        <button class="cyber-btn small">了解更多</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 用户卡片 -->
+        <div class="cyber-card user-card">
+            <div class="user-avatar">
+                <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w-200" alt="用户头像">
+                <div class="user-status online"></div>
+            </div>
+            <div class="user-info">
+                <h4 class="user-name">数字旅人</h4>
+                <p class="user-title">前端开发者 & UI设计师</p>
+                <div class="user-skills">
+                    <span class="skill-tag">JavaScript</span>
+                    <span class="skill-tag">Vue.js</span>
+                    <span class="skill-tag">UI Design</span>
+                </div>
+            </div>
+            <div class="user-actions">
+                <button class="cyber-btn icon-only">
+                    <i class="fas fa-envelope"></i>
+                </button>
+                <button class="cyber-btn icon-only">
+                    <i class="fas fa-user-plus"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .cyber-cards-demo {
+        padding: var(--spacing-xl);
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius-lg);
+        margin: var(--spacing-xl) 0;
+    }
+    
+    .cyber-cards-demo h3 {
+        color: var(--primary);
+        margin-bottom: var(--spacing-lg);
+        font-family: var(--font-heading);
+    }
+    
+    .card-showcase {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: var(--spacing-lg);
+    }
+    
+    /* 基础卡片样式 */
+    .cyber-card {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius-lg);
+        padding: var(--spacing-lg);
+        transition: all var(--transition-normal);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .cyber-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, transparent, rgba(100, 255, 218, 0.1), transparent);
+        transform: translateX(-100%);
+        transition: transform 0.6s ease;
+    }
+    
+    .cyber-card:hover::before {
+        transform: translateX(100%);
+    }
+    
+    .cyber-card:hover {
+        border-color: var(--primary);
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-glow);
+    }
+    
+    /* 卡片头部 */
+    .card-header {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-md);
+        margin-bottom: var(--spacing-md);
+    }
+    
+    .card-icon {
+        width: 40px;
+        height: 40px;
+        background: rgba(100, 255, 218, 0.1);
+        border-radius: var(--border-radius-md);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--primary);
+        font-size: 1.2rem;
+    }
+    
+    .card-title {
+        font-family: var(--font-heading);
+        font-size: 1.2rem;
+        color: var(--text-primary);
+        flex: 1;
+        margin: 0;
+    }
+    
+    .card-badge {
+        background: var(--secondary);
+        color: var(--bg-dark);
+        font-size: 0.7rem;
+        padding: 2px 8px;
+        border-radius: 10px;
+        font-weight: 600;
+    }
+    
+    /* 卡片内容 */
+    .card-content {
+        color: var(--text-secondary);
+        line-height: 1.6;
+        margin-bottom: var(--spacing-lg);
+    }
+    
+    .card-content p {
+        margin: 0 0 var(--spacing-md);
+    }
+    
+    /* 卡片操作 */
+    .card-actions {
+        display: flex;
+        gap: var(--spacing-sm);
+    }
+    
+    /* 图片卡片 */
+    .image-card {
+        padding: 0;
+        overflow: hidden;
+    }
+    
+    .image-card .card-image {
+        position: relative;
+        height: 200px;
+        overflow: hidden;
+    }
+    
+    .image-card .card-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform var(--transition-normal);
+    }
+    
+    .image-card:hover .card-image img {
+        transform: scale(1.05);
+    }
+    
+    .image-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: var(--spacing-md);
+        background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+    }
+    
+    .image-label {
+        background: var(--primary);
+        color: var(--bg-dark);
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+    
+    .image-card .card-content {
+        padding: var(--spacing-lg);
+    }
+    
+    .card-meta {
+        display: flex;
+        gap: var(--spacing-md);
+        color: var(--text-muted);
+        font-size: 0.8rem;
+        margin-top: var(--spacing-md);
+    }
+    
+    .card-meta i {
+        margin-right: 4px;
+    }
+    
+    /* 特性卡片 */
+    .feature-card {
+        text-align: center;
+    }
+    
+    .feature-icon {
+        width: 60px;
+        height: 60px;
+        margin: 0 auto var(--spacing-md);
+        background: rgba(100, 255, 218, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--primary);
+        font-size: 1.5rem;
+        position: relative;
+    }
+    
+    .icon-glow {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background: var(--primary);
+        filter: blur(10px);
+        opacity: 0.3;
+        z-index: -1;
+    }
+    
+    .feature-stats {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--spacing-md);
+        margin-top: var(--spacing-lg);
+    }
+    
+    .stat {
+        text-align: center;
+    }
+    
+    .stat-value {
+        display: block;
+        font-family: var(--font-heading);
+        font-size: 1.5rem;
+        color: var(--primary);
+        font-weight: 600;
+    }
+    
+    .stat-label {
+        display: block;
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    
+    /* 数据卡片 */
+    .card-status {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+    }
+    
+    .card-status.online {
+        background: #00ff00;
+        box-shadow: 0 0 10px #00ff00;
+        animation: pulse 2s ease-in-out infinite;
+    }
+    
+    .data-grid {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-md);
+    }
+    
+    .data-item {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-md);
+    }
+    
+    .data-label {
+        min-width: 60px;
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+    }
+    
+    .data-progress {
+        flex: 1;
+        height: 6px;
+        background: var(--bg-gray);
+        border-radius: 3px;
+        overflow: hidden;
+    }
+    
+    .data-progress .progress-bar {
+        height: 100%;
+        background: linear-gradient(90deg, var(--primary), var(--secondary));
+        border-radius: 3px;
+        transition: width 1s ease;
+    }
+    
+    .data-value {
+        min-width: 40px;
+        text-align: right;
+        color: var(--primary);
+        font-family: var(--font-body);
+        font-weight: 600;
+    }
+    
+    /* 交互卡片 */
+    .interactive-card .card-header {
+        cursor: pointer;
+    }
+    
+    .card-toggle {
+        background: transparent;
+        border: none;
+        color: var(--text-secondary);
+        cursor: pointer;
+        transition: transform var(--transition-normal);
+    }
+    
+    .card-toggle.active {
+        transform: rotate(180deg);
+    }
+    
+    .card-expandable {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height var(--transition-normal);
+    }
+    
+    .interactive-card.expanded .card-expandable {
+        max-height: 200px;
+        margin-top: var(--spacing-md);
+    }
+    
+    .expandable-actions {
+        margin-top: var(--spacing-md);
+    }
+    
+    /* 用户卡片 */
+    .user-card {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-lg);
+    }
+    
+    .user-avatar {
+        position: relative;
+        width: 60px;
+        height: 60px;
+    }
+    
+    .user-avatar img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+    
+    .user-status {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        border: 2px solid var(--bg-dark);
+    }
+    
+    .user-status.online {
+        background: #00ff00;
+    }
+    
+    .user-info {
+        flex: 1;
+    }
+    
+    .user-name {
+        font-family: var(--font-heading);
+        color: var(--text-primary);
+        margin: 0 0 4px;
+    }
+    
+    .user-title {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+        margin: 0 0 var(--spacing-sm);
+    }
+    
+    .user-skills {
+        display: flex;
+        gap: 4px;
+        flex-wrap: wrap;
+    }
+    
+    .skill-tag {
+        background: rgba(100, 255, 218, 0.1);
+        color: var(--primary);
+        font-size: 0.7rem;
+        padding: 2px 6px;
+        border-radius: 4px;
+    }
+    
+    .user-actions {
+        display: flex;
+        gap: var(--spacing-sm);
+    }
+</style>
+
+<script>
+    // 卡片交互
+    document.addEventListener('DOMContentLoaded', function() {
+        // 交互卡片展开/收起
+        const interactiveCard = document.querySelector('.interactive-card');
+        const cardToggle = interactiveCard?.querySelector('.card-toggle');
+        
+        if (cardToggle) {
+            cardToggle.addEventListener('click', function() {
+                interactiveCard.classList.toggle('expanded');
+                this.classList.toggle('active');
+                
+                const icon = this.querySelector('i');
+                if (interactiveCard.classList.contains('expanded')) {
+                    icon.className = 'fas fa-chevron-up';
+                } else {
+                    icon.className = 'fas fa-chevron-down';
+                }
+            });
+        }
+        
+        // 卡片悬停效果
+        const cards = document.querySelectorAll('.cyber-card');
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.zIndex = '10';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.zIndex = '1';
+            });
+        });
+        
+        // 模拟数据更新
+        const dataItems = document.querySelectorAll('.data-item');
+        dataItems.forEach(item => {
+            const progressBar = item.querySelector('.progress-bar');
+            const dataValue = item.querySelector('.data-value');
+            
+            if (progressBar && dataValue) {
+                const currentWidth = parseInt(progressBar.style.width);
+                const targetWidth = Math.floor(Math.random() * 30) + 50; // 50-80%
+                
+                let width = currentWidth || 0;
+                const interval = setInterval(() => {
+                    if (width < targetWidth) {
+                        width += 1;
+                        progressBar.style.width = width + '%';
+                        dataValue.textContent = width + '%';
+                    } else {
+                        clearInterval(interval);
+                    }
+                }, 20);
+            }
+        });
+    });
+</script>

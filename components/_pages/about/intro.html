@@ -1,0 +1,317 @@
+<section class="about-intro">
+    <div class="intro-container">
+        <div class="intro-content">
+            <div class="intro-badge">
+                <span class="badge-text">ABOUT ME</span>
+            </div>
+            <h1 class="intro-title">数字世界的<br>探索者与创造者</h1>
+            <div class="intro-text">
+                <p>
+                    我是<span class="highlight">数字旅人</span>，一名热爱技术与设计的前端开发者。
+                    在代码与美学的交汇处寻找平衡，用创造力构建独特的数字体验。
+                </p>
+                <p>
+                    我相信技术不仅是工具，更是表达创意、连接世界的语言。
+                    从一行代码到一个完整的交互体验，每一步都充满探索的乐趣。
+                </p>
+            </div>
+            <div class="intro-quote">
+                <i class="fas fa-quote-left"></i>
+                <p>在虚拟与现实之间架起桥梁，用代码书写未来的诗篇。</p>
+                <i class="fas fa-quote-right"></i>
+            </div>
+        </div>
+        <div class="intro-visual">
+            <div class="visual-container">
+                <div class="visual-circle">
+                    <div class="circle-ring outer"></div>
+                    <div class="circle-ring middle"></div>
+                    <div class="circle-ring inner"></div>
+                    <div class="circle-content">
+                        <div class="circle-text">CREATOR</div>
+                        <div class="circle-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="visual-orbits">
+                    <div class="orbit orbit-1">
+                        <div class="orbit-dot"></div>
+                    </div>
+                    <div class="orbit orbit-2">
+                        <div class="orbit-dot"></div>
+                    </div>
+                    <div class="orbit orbit-3">
+                        <div class="orbit-dot"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .about-intro {
+        padding: var(--spacing-xxl) var(--spacing-xl);
+        background: rgba(0, 0, 0, 0.3);
+    }
+    
+    .intro-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--spacing-xxl);
+        align-items: center;
+    }
+    
+    .intro-badge {
+        display: inline-block;
+        background: rgba(100, 255, 218, 0.1);
+        border: 1px solid var(--primary);
+        padding: var(--spacing-sm) var(--spacing-md);
+        border-radius: var(--border-radius-lg);
+        margin-bottom: var(--spacing-xl);
+        color: var(--primary);
+        font-family: var(--font-body);
+        font-size: 0.9rem;
+        letter-spacing: 2px;
+    }
+    
+    .intro-title {
+        font-family: var(--font-heading);
+        font-size: 3rem;
+        line-height: 1.1;
+        color: var(--text-primary);
+        margin-bottom: var(--spacing-lg);
+    }
+    
+    .intro-text {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: var(--text-secondary);
+        margin-bottom: var(--spacing-xl);
+    }
+    
+    .intro-text p {
+        margin-bottom: var(--spacing-md);
+    }
+    
+    .intro-quote {
+        padding: var(--spacing-lg);
+        background: rgba(255, 255, 255, 0.05);
+        border-left: 3px solid var(--primary);
+        border-radius: var(--border-radius-md);
+        position: relative;
+    }
+    
+    .intro-quote i {
+        color: var(--primary);
+        font-size: 1.5rem;
+    }
+    
+    .intro-quote i:first-child {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+    }
+    
+    .intro-quote i:last-child {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+    }
+    
+    .intro-quote p {
+        font-style: italic;
+        color: var(--text-secondary);
+        padding: 0 var(--spacing-lg);
+        margin: 0;
+    }
+    
+    /* 视觉元素样式 */
+    .visual-container {
+        position: relative;
+        height: 500px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .visual-circle {
+        width: 300px;
+        height: 300px;
+        position: relative;
+    }
+    
+    .circle-ring {
+        position: absolute;
+        border: 1px solid var(--border-color);
+        border-radius: 50%;
+        animation: rotate linear infinite;
+    }
+    
+    .circle-ring.outer {
+        width: 100%;
+        height: 100%;
+        border-color: var(--primary);
+        animation-duration: 20s;
+    }
+    
+    .circle-ring.middle {
+        width: 200px;
+        height: 200px;
+        top: 50px;
+        left: 50px;
+        border-color: var(--secondary);
+        animation-duration: 15s;
+        animation-direction: reverse;
+    }
+    
+    .circle-ring.inner {
+        width: 100px;
+        height: 100px;
+        top: 100px;
+        left: 100px;
+        border-color: var(--accent);
+        animation-duration: 10s;
+    }
+    
+    .circle-content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+    }
+    
+    .circle-text {
+        color: var(--primary);
+        font-family: var(--font-heading);
+        font-size: 1.2rem;
+        letter-spacing: 2px;
+        margin-bottom: var(--spacing-md);
+    }
+    
+    .circle-icon {
+        width: 60px;
+        height: 60px;
+        margin: 0 auto;
+        background: rgba(100, 255, 218, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--primary);
+        font-size: 1.5rem;
+    }
+    
+    .visual-orbits {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+    
+    .orbit {
+        position: absolute;
+        border: 1px dashed rgba(100, 255, 218, 0.3);
+        border-radius: 50%;
+        animation: rotate linear infinite;
+    }
+    
+    .orbit-1 {
+        width: 400px;
+        height: 400px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        animation-duration: 30s;
+    }
+    
+    .orbit-2 {
+        width: 350px;
+        height: 350px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        animation-duration: 25s;
+        animation-direction: reverse;
+    }
+    
+    .orbit-3 {
+        width: 250px;
+        height: 250px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        animation-duration: 20s;
+    }
+    
+    .orbit-dot {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        background: var(--primary);
+        border-radius: 50%;
+        top: -4px;
+        left: 50%;
+        transform: translateX(-50%);
+        box-shadow: 0 0 10px var(--primary);
+    }
+    
+    @keyframes rotate {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+    
+    @media (max-width: 768px) {
+        .intro-container {
+            grid-template-columns: 1fr;
+            gap: var(--spacing-xl);
+        }
+        
+        .intro-title {
+            font-size: 2.5rem;
+        }
+        
+        .visual-container {
+            height: 300px;
+        }
+        
+        .visual-circle {
+            width: 200px;
+            height: 200px;
+        }
+        
+        .circle-ring.middle {
+            width: 150px;
+            height: 150px;
+            top: 25px;
+            left: 25px;
+        }
+        
+        .circle-ring.inner {
+            width: 80px;
+            height: 80px;
+            top: 60px;
+            left: 60px;
+        }
+        
+        .orbit-1 {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .orbit-2 {
+            width: 250px;
+            height: 250px;
+        }
+        
+        .orbit-3 {
+            width: 200px;
+            height: 200px;
+        }
+    }
+</style>
