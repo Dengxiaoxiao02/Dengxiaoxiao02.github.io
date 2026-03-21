@@ -610,6 +610,124 @@ class CyberLoader {
         });
     }
 
+    animateNumbers() {
+        const counters = document.querySelectorAll('.stat-number');
+        counters.forEach(counter => {
+            const target = parseInt(counter.dataset.count);
+            const duration = 2000;
+            const startTime = Date.now();
+            
+            const animate = () => {
+                const currentTime = Date.now();
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                if (target === Infinity) {
+                    counter.textContent = '∞';
+                } else {
+                    const value = Math.floor(progress * target);
+                    counter.textContent = value.toLocaleString();
+                }
+                
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                }
+            };
+            
+            setTimeout(animate, 500);
+        });
+    }
+    
+    // 在这里添加 init3DSprite 方法
+    init3DSprite() {
+        console.log('初始化3D精灵...');
+        
+        if (typeof THREE === 'undefined') {
+            console.error('Three.js未加载');
+            this.showError('3D引擎加载失败');
+            return;
+        }
+        
+        if (typeof gsap === 'undefined') {
+            console.error('GSAP未加载');
+            this.showError('动画库加载失败');
+            return;
+        }
+        
+        const demoContainer = document.querySelector('.digital-sprite-container');
+        if (!demoContainer) {
+            console.error('找不到3D容器');
+            return;
+        }
+        
+        console.log('找到3D容器，开始初始化...');
+        
+        if (typeof initDigitalSprite === 'function') {
+            console.log('调用initDigitalSprite函数');
+            initDigitalSprite();
+        } else {
+            console.warn('initDigitalSprite函数未定义，尝试动态执行');
+            
+            const scripts = demoContainer.querySelectorAll('script');
+            scripts.forEach((script, index) => {
+                try {
+                    console.log(`执行脚本 ${index + 1}`);
+                    eval(script.textContent);
+                } catch (e) {
+                    console.error(`脚本执行失败:`, e);
+                }
+            });
+            
+            if (typeof initDigitalSprite === 'function') {
+                setTimeout(() => initDigitalSprite(), 500);
+            }
+        }
+    }
+    
+    initParticles() {
+        const canvas = document.getElementById('avatar-canvas');
+        if (!canvas) return;
+        
+        const ctx = canvas.getContext('2d');
+        canvas.width = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
+        
+        const particles = [];
+        const particleCount = 50;
+        
+        for (let i = 0; i < particleCount; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                size: Math.random() * 2 + 0.5,
+                speedX: Math.random() * 0.5 - 0.25,
+                speedY: Math.random() * 0.5 - 0.25,
+                opacity: Math.random() * 0.5 + 0.2
+            });
+        }
+        
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            particles.forEach(particle => {
+                particle.x += particle.speedX;
+                particle.y += particle.speedY;
+                
+                if (particle.x < 0 || particle.x > canvas.width) particle.speedX *= -1;
+                if (particle.y < 0 || particle.y > canvas.height) particle.speedY *= -1;
+                
+                ctx.beginPath();
+                ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(100, 255, 218, ${particle.opacity})`;
+                ctx.fill();
+            });
+            
+            requestAnimationFrame(animateParticles);
+        }
+        
+        animateParticles();
+    }
+
     initParticles() {
         const canvas = document.getElementById('avatar-canvas');
         if (!canvas) return;
@@ -659,23 +777,18 @@ class CyberLoader {
         
         this.isLoading = true;
         this.currentPage = page;
-        
-        // 更新导航激活状态
         document.querySelectorAll('.nav-link').forEach(link => {
             link.classList.toggle('active', link.dataset.page === page);
         });
         
-        // 显示加载状态
         this.showNotification(`加载 ${page} 页面...`);
         
         try {
             const contentContainer = document.getElementById('content-container');
             if (!contentContainer) return;
             
-            // 清空当前内容
             contentContainer.innerHTML = '';
             
-            // 根据页面加载不同内容
             if (page === 'home') {
                 contentContainer.innerHTML = `
                     ${this.components.hero || ''}
@@ -683,31 +796,47 @@ class CyberLoader {
                     ${this.components.cta || ''}
                 `;
             } else if (page === 'lab') {
-                // ✅ 修复：先加载实验室页面框架
-                const labPage = await this.loadComponent('pages/lab/index.html');
-                contentContainer.innerHTML = labPage;
+                console.log('开始加载实验室页面...');
                 
-                // ✅ 然后动态加载3D组件到指定位置
-                setTimeout(() => {
-                    const demoContainer = document.getElementById('threejs-demo-container');
-                    if (demoContainer && this.components.threejsDemo) {
-                        demoContainer.innerHTML = this.components.threejsDemo;
-                    }
-                }, 100);
+                const tempDiv = document.createElement('div');
+                
+                try {
+                    const labPage = await this.loadComponent('pages/lab/index.html');
+                    tempDiv.innerHTML = labPage;
+                    
+                    contentContainer.innerHTML = tempDiv.innerHTML;
+                    
+                    setTimeout(() => {
+                        const demoContainer = document.getElementById('threejs-demo-container');
+                        if (demoContainer && this.components.threejsDemo) {
+                            console.log('插入3D组件到容器');
+                            demoContainer.innerHTML = this.components.threejsDemo;
+                            
+                            this.init3DSprite();
+                        } else {
+                            console.error('找不到3D容器或组件未加载');
+                            if (demoContainer) {
+                                demoContainer.innerHTML = '<div class="error">3D容器加载失败</div>';
+                            }
+                        }
+                    }, 100);
+                    
+                } catch (error) {
+                    console.error('加载实验室页面失败:', error);
+                    contentContainer.innerHTML = '<div class="error">实验室页面加载失败</div>';
+                }
             } else {
-                // 其他页面的加载逻辑
                 const pageContent = await this.loadComponent(`pages/${page}/index.html`);
                 contentContainer.innerHTML = pageContent;
             }
             
-            // 重新初始化动画和交互
             this.initAnimations();
             
             await this.delay(300);
             this.showNotification(`${page} 页面加载完成`);
         } catch (error) {
             console.error('页面导航失败:', error);
-            this.showError('页面加载失败');
+            this.showError('页面加载失败: ' + error.message);
         } finally {
             this.isLoading = false;
         }
@@ -742,7 +871,7 @@ class CyberLoader {
     }
 }
 
-// 初始化加载器
+// 初始化加载器123
 document.addEventListener('DOMContentLoaded', () => {
     window.cyberLoader = new CyberLoader();
 });

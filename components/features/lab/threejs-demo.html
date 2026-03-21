@@ -1,0 +1,832 @@
+<!--
+  组件：3D数字游灵 (Digital Sprite)
+  位置：/components/features/lab/threejs-demo.html
+  功能：可交互的3D吉祥物演示
+  依赖：Three.js, GSAP (通过CDN引入)
+  作者：您的名字
+  日期：2026年3月
+-->
+<div class="digital-sprite-container">
+    <!-- 标题和描述 -->
+    <header class="sprite-header">
+      <h2>数字游灵 · Digital Sprite</h2>
+      <p class="subtitle">一个由数据流构成的虚拟生命体 · 点击或触摸与它互动</p>
+    </header>
+    
+    <!-- 3D画布容器 -->
+    <div id="spriteCanvasContainer" class="canvas-container">
+      <!-- 画布由Three.js自动创建 -->
+      <!-- 加载动画 -->
+      <div id="loadingScreen" class="loading-overlay">
+        <div class="loading-content">
+          <div class="loading-spinner"></div>
+          <p>正在召唤数字游灵...</p>
+          <div class="loading-progress">
+            <div class="loading-bar"></div>
+          </div>
+          <p class="loading-tip">提示：模型大小约3MB，请耐心等待</p>
+        </div>
+      </div>
+      
+      <!-- 交互提示 -->
+      <div id="interactionHint" class="interaction-hint">
+        <span>🖱️ 拖拽旋转</span>
+        <span>🖱️ 滚轮缩放</span>
+      </div>
+    </div>
+    
+    <!-- 控制面板 -->
+    <div class="control-panel">
+      <h3>✨ 互动控制</h3>
+      <div class="control-grid">
+        <button class="control-btn" data-action="wave" onclick="window.spriteAnimations?.playWave()">
+          <span class="btn-icon">👋</span>
+          <span class="btn-text">打招呼</span>
+        </button>
+        
+        <button class="control-btn" data-action="dance" onclick="window.spriteAnimations?.playDance()">
+          <span class="btn-icon">💃</span>
+          <span class="btn-text">开心舞动</span>
+        </button>
+        
+        <button class="control-btn" data-action="think" onclick="window.spriteAnimations?.playThink()">
+          <span class="btn-icon">💭</span>
+          <span class="btn-text">思考中...</span>
+        </button>
+        
+        <button class="control-btn" data-action="shy" onclick="window.spriteAnimations?.playShy()">
+          <span class="btn-icon">😳</span>
+          <span class="btn-text">脸红害羞</span>
+        </button>
+        
+        <button class="control-btn" data-action="demo" onclick="window.spriteAnimations?.changeDemoMode()">
+          <span class="btn-icon">🎮</span>
+          <span class="btn-text">切换模式</span>
+        </button>
+        
+        <button class="control-btn" data-action="reset" onclick="window.spriteSystem?.resetCamera()">
+          <span class="btn-icon">🔁</span>
+          <span class="btn-text">重置视角</span>
+        </button>
+      </div>
+      
+      <div class="info-section">
+        <p class="info-text">
+          <strong>技术栈：</strong>Three.js + GSAP<br>
+          <strong>设计理念：</strong>融合复古CRT美学与现代数字艺术<br>
+          <strong>模型格式：</strong>自定义生成的GLB文件
+        </p>
+      </div>
+    </div>
+  </div>
+  
+  <style>
+  /* 基础容器样式 */
+  .digital-sprite-container {
+    width: 100%;
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, rgba(20, 25, 40, 0.85) 0%, rgba(10, 15, 30, 0.9) 100%);
+    border-radius: 20px;
+    border: 1px solid rgba(100, 150, 255, 0.2);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: #e0e7ff;
+  }
+  
+  /* 标题样式 */
+  .sprite-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(100, 150, 255, 0.3);
+  }
+  
+  .sprite-header h2 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    background: linear-gradient(90deg, #8A2BE2, #00BFFF, #20B2AA);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin: 0 0 0.5rem 0;
+    letter-spacing: -0.5px;
+  }
+  
+  .sprite-header .subtitle {
+    font-size: 0.95rem;
+    opacity: 0.8;
+    font-weight: 300;
+    letter-spacing: 0.3px;
+  }
+  
+  /* 画布容器 */
+  .canvas-container {
+    width: 100%;
+    height: 500px;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    background: 
+      radial-gradient(circle at 20% 30%, rgba(138, 43, 226, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(0, 191, 255, 0.1) 0%, transparent 50%),
+      linear-gradient(45deg, #0a0f1e 0%, #151b2d 100%);
+    border: 1px solid rgba(100, 150, 255, 0.15);
+    margin-bottom: 1.5rem;
+  }
+  
+  #spriteCanvasContainer canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* 加载覆盖层 */
+  .loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(10, 15, 30, 0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    transition: opacity 0.5s ease;
+  }
+  
+  .loading-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+  
+  .loading-content {
+    text-align: center;
+    max-width: 300px;
+  }
+  
+  .loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 3px solid rgba(100, 150, 255, 0.2);
+    border-top-color: #8A2BE2;
+    border-radius: 50%;
+    margin: 0 auto 1.5rem;
+    animation: spin 1.2s linear infinite;
+  }
+  
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  
+  .loading-content p {
+    margin: 0.5rem 0;
+    font-size: 0.9rem;
+  }
+  
+  .loading-progress {
+    width: 200px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    margin: 1rem auto;
+    overflow: hidden;
+  }
+  
+  .loading-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #8A2BE2, #00BFFF);
+    border-radius: 2px;
+    transition: width 0.3s ease;
+  }
+  
+  .loading-tip {
+    font-size: 0.8rem;
+    opacity: 0.6;
+    font-style: italic;
+  }
+  
+  /* 交互提示 */
+  .interaction-hint {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    display: flex;
+    gap: 10px;
+    font-size: 0.75rem;
+    opacity: 0.7;
+    z-index: 5;
+  }
+  
+  .interaction-hint span {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 4px 8px;
+    border-radius: 12px;
+    backdrop-filter: blur(5px);
+  }
+  
+  /* 控制面板 */
+  .control-panel {
+    background: rgba(20, 25, 40, 0.6);
+    border-radius: 12px;
+    padding: 1.2rem;
+    border: 1px solid rgba(100, 150, 255, 0.1);
+  }
+  
+  .control-panel h3 {
+    margin: 0 0 1rem 0;
+    font-size: 1.2rem;
+    color: #a5b4fc;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .control-panel h3::before {
+    content: "⚙️";
+    font-size: 1rem;
+  }
+  
+  /* 控制按钮网格 */
+  .control-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+    margin-bottom: 1.2rem;
+  }
+  
+  .control-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 15px;
+    background: linear-gradient(135deg, rgba(138, 43, 226, 0.2), rgba(0, 191, 255, 0.2));
+    border: 1px solid rgba(138, 43, 226, 0.3);
+    border-radius: 10px;
+    color: #e0e7ff;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+  }
+  
+  .control-btn:hover {
+    background: linear-gradient(135deg, rgba(138, 43, 226, 0.3), rgba(0, 191, 255, 0.3));
+    border-color: rgba(138, 43, 226, 0.6);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(138, 43, 226, 0.2);
+  }
+  
+  .control-btn:active {
+    transform: translateY(0);
+  }
+  
+  .control-btn .btn-icon {
+    font-size: 1.1rem;
+  }
+  
+  .control-btn .btn-text {
+    font-weight: 500;
+  }
+  
+  /* 信息区域 */
+  .info-section {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 1rem;
+  }
+  
+  .info-text {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    opacity: 0.8;
+    margin: 0;
+  }
+  
+  .info-text strong {
+    color: #8A2BE2;
+    font-weight: 600;
+  }
+  
+  /* 响应式调整 */
+  @media (max-width: 768px) {
+    .digital-sprite-container {
+      padding: 1rem;
+      margin: 1rem auto;
+    }
+    
+    .sprite-header h2 {
+      font-size: 1.8rem;
+    }
+    
+    .canvas-container {
+      height: 400px;
+    }
+    
+    .control-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .interaction-hint {
+      display: none; /* 在移动端隐藏提示 */
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .canvas-container {
+      height: 350px;
+    }
+    
+    .control-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  </style>
+  
+  <script>
+  // 全局变量声明
+  let spriteSystem = null;
+  let spriteAnimations = null;
+  
+  // 主初始化函数
+  function initDigitalSprite() {
+    // 防止重复初始化
+    if (window.spriteSystemInitialized) return;
+    window.spriteSystemInitialized = true;
+    
+    // 创建系统实例
+    spriteSystem = new DigitalSpriteSystem();
+    spriteAnimations = new SpriteAnimations(spriteSystem);
+    
+    // 初始化系统
+    spriteSystem.init();
+  }
+  
+  // 3D系统类
+  class DigitalSpriteSystem {
+    constructor() {
+      this.scene = null;
+      this.camera = null;
+      this.renderer = null;
+      this.controls = null;
+      this.sprite = null;
+      this.particles = null;
+      this.mixer = null;
+      this.clock = null;
+      
+      // 模型文件路径
+      this.modelPath = '/assets/models/digital-sprite.glb'; // 您需要准备这个文件
+      
+      // 颜色配置
+      this.colors = {
+        primary: 0x8A2BE2,     // 蓝紫色
+        secondary: 0x00BFFF,  // 深天蓝
+        accent: 0x20B2AA,     // 浅海绿
+        glow: 0xE0E7FF,       // 淡蓝白
+        blush: 0xFF69B4       // 害羞时的粉色
+      };
+    }
+    
+    init() {
+      this.initScene();
+      this.initCamera();
+      this.initRenderer();
+      this.initLights();
+      this.initControls();
+      this.loadModel();
+      this.initParticles();
+      this.initEventListeners();
+      this.animate();
+      
+      // 模拟加载进度
+      this.simulateLoading();
+    }
+    
+    initScene() {
+      this.scene = new THREE.Scene();
+      this.scene.background = new THREE.Color(0x0a0f1e);
+      this.scene.fog = new THREE.Fog(0x0a0f1e, 10, 30);
+    }
+    
+    initCamera() {
+      this.camera = new THREE.PerspectiveCamera(
+        45,
+        this.getContainerSize().width / this.getContainerSize().height,
+        0.1,
+        1000
+      );
+      this.camera.position.set(0, 2, 8);
+    }
+    
+    initRenderer() {
+      const container = document.getElementById('spriteCanvasContainer');
+      this.renderer = new THREE.WebGLRenderer({ 
+        antialias: true,
+        alpha: true
+      });
+      
+      const { width, height } = this.getContainerSize();
+      this.renderer.setSize(width, height);
+      this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      this.renderer.shadowMap.enabled = true;
+      this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+      
+      container.appendChild(this.renderer.domElement);
+    }
+    
+    initLights() {
+      // 环境光
+      const ambientLight = new THREE.AmbientLight(0x404040, 0.6);
+      this.scene.add(ambientLight);
+      
+      // 主光源
+      const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+      directionalLight.position.set(5, 5, 5);
+      directionalLight.castShadow = true;
+      directionalLight.shadow.mapSize.width = 1024;
+      directionalLight.shadow.mapSize.height = 1024;
+      this.scene.add(directionalLight);
+      
+      // 辅助光
+      const backLight = new THREE.DirectionalLight(this.colors.primary, 0.8);
+      backLight.position.set(-3, 2, -3);
+      this.scene.add(backLight);
+      
+      // 发光效果
+      const pointLight = new THREE.PointLight(this.colors.secondary, 0.5, 20);
+      pointLight.position.set(0, 3, 0);
+      this.scene.add(pointLight);
+    }
+    
+    initControls() {
+      this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
+      this.controls.enableDamping = true;
+      this.controls.dampingFactor = 0.05;
+      this.controls.minDistance = 2;
+      this.controls.maxDistance = 15;
+      this.controls.maxPolarAngle = Math.PI * 0.9;
+      this.controls.minPolarAngle = Math.PI * 0.1;
+    }
+    
+    async loadModel() {
+      const loader = new THREE.GLTFLoader();
+      
+      try {
+        // 这里应该加载您的实际模型文件
+        // const gltf = await loader.loadAsync(this.modelPath);
+        
+        // 临时：创建一个占位模型
+        this.createPlaceholderModel();
+        
+      } catch (error) {
+        console.error('模型加载失败:', error);
+        this.createPlaceholderModel();
+      }
+    }
+    
+    createPlaceholderModel() {
+      // 主身体 - 几何组合体
+      const geometry = new THREE.IcosahedronGeometry(1, 1);
+      const material = new THREE.MeshPhysicalMaterial({
+        color: this.colors.primary,
+        metalness: 0.2,
+        roughness: 0.1,
+        transmission: 0.9,
+        thickness: 1,
+        envMapIntensity: 1,
+        clearcoat: 1,
+        clearcoatRoughness: 0
+      });
+      
+      this.sprite = new THREE.Mesh(geometry, material);
+      this.sprite.position.y = 0.5;
+      
+      // 添加发光边缘
+      const edges = new THREE.EdgesGeometry(geometry);
+      const lineMaterial = new THREE.LineBasicMaterial({ 
+        color: this.colors.secondary,
+        linewidth: 2
+      });
+      const edgesMesh = new THREE.LineSegments(edges, lineMaterial);
+      edgesMesh.scale.set(1.02, 1.02, 1.02);
+      this.sprite.add(edgesMesh);
+      
+      // 屏幕面
+      const screenGeometry = new THREE.PlaneGeometry(0.8, 0.8);
+      const screenMaterial = new THREE.MeshBasicMaterial({
+        color: 0x00ff00,
+        side: THREE.DoubleSide,
+        transparent: true,
+        opacity: 0.7
+      });
+      const screen = new THREE.Mesh(screenGeometry, screenMaterial);
+      screen.position.z = 0.51;
+      this.sprite.add(screen);
+      
+      this.scene.add(this.sprite);
+      
+      // 创建动画混合器
+      this.mixer = new THREE.AnimationMixer(this.sprite);
+      this.clock = new THREE.Clock();
+      
+      // 创建呼吸动画
+      this.createBreathingAnimation();
+      
+      // 隐藏加载界面
+      setTimeout(() => {
+        document.getElementById('loadingScreen').classList.add('hidden');
+      }, 1000);
+    }
+    
+    createBreathingAnimation() {
+      // 简单的呼吸动画
+      const scaleUp = { scale: 1 };
+      const scaleDown = { scale: 1.1 };
+      
+      const breathingTL = gsap.timeline({ repeat: -1, yoyo: true, repeatDelay: 0.5 });
+      
+      breathingTL
+        .to(this.sprite.scale, {
+          x: 1.05,
+          y: 1.05,
+          z: 1.05,
+          duration: 2,
+          ease: "sine.inOut"
+        })
+        .to(this.sprite.scale, {
+          x: 1,
+          y: 1,
+          z: 1,
+          duration: 2,
+          ease: "sine.inOut"
+        });
+    }
+    
+    initParticles() {
+      const particleCount = 200;
+      const particles = new THREE.BufferGeometry();
+      const positions = new Float32Array(particleCount * 3);
+      const colors = new Float32Array(particleCount * 3);
+      
+      for (let i = 0; i < particleCount; i++) {
+        const i3 = i * 3;
+        
+        // 随机位置
+        positions[i3] = (Math.random() - 0.5) * 10;
+        positions[i3 + 1] = (Math.random() - 0.5) * 10;
+        positions[i3 + 2] = (Math.random() - 0.5) * 10;
+        
+        // 随机颜色
+        colors[i3] = 0.5 + Math.random() * 0.5;     // R
+        colors[i3 + 1] = 0.7 + Math.random() * 0.3; // G
+        colors[i3 + 2] = 1.0;                       // B
+      }
+      
+      particles.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      particles.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+      
+      const particleMaterial = new THREE.PointsMaterial({
+        size: 0.05,
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.6
+      });
+      
+      this.particles = new THREE.Points(particles, particleMaterial);
+      this.scene.add(this.particles);
+    }
+    
+    initEventListeners() {
+      window.addEventListener('resize', () => this.onWindowResize());
+      
+      // 点击交互
+      this.renderer.domElement.addEventListener('click', (event) => {
+        if (!this.sprite) return;
+        
+        const mouse = new THREE.Vector2();
+        const rect = this.renderer.domElement.getBoundingClientRect();
+        
+        mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+        mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+        
+        const raycaster = new THREE.Raycaster();
+        raycaster.setFromCamera(mouse, this.camera);
+        
+        const intersects = raycaster.intersectObject(this.sprite, true);
+        
+        if (intersects.length > 0) {
+          spriteAnimations.playRandomReaction();
+        }
+      });
+    }
+    
+    onWindowResize() {
+      const { width, height } = this.getContainerSize();
+      
+      this.camera.aspect = width / height;
+      this.camera.updateProjectionMatrix();
+      this.renderer.setSize(width, height);
+    }
+    
+    getContainerSize() {
+      const container = document.getElementById('spriteCanvasContainer');
+      return {
+        width: container.clientWidth,
+        height: container.clientHeight
+      };
+    }
+    
+    simulateLoading() {
+      const loadingBar = document.querySelector('.loading-bar');
+      let progress = 0;
+      
+      const interval = setInterval(() => {
+        progress += Math.random() * 10;
+        if (progress > 100) {
+          progress = 100;
+          clearInterval(interval);
+        }
+        loadingBar.style.width = `${progress}%`;
+      }, 200);
+    }
+    
+    resetCamera() {
+      gsap.to(this.camera.position, {
+        x: 0,
+        y: 2,
+        z: 8,
+        duration: 1,
+        ease: "power2.out"
+      });
+      
+      if (this.controls) {
+        this.controls.target.set(0, 0, 0);
+      }
+    }
+    
+    animate() {
+      requestAnimationFrame(() => this.animate());
+      
+      const delta = this.clock ? this.clock.getDelta() : 0;
+      
+      if (this.mixer) {
+        this.mixer.update(delta);
+      }
+      
+      if (this.particles) {
+        this.particles.rotation.y += 0.001;
+      }
+      
+      if (this.controls) {
+        this.controls.update();
+      }
+      
+      if (this.sprite) {
+        this.sprite.rotation.y += 0.002;
+      }
+      
+      this.renderer.render(this.scene, this.camera);
+    }
+  }
+  
+  // 动画管理类
+  class SpriteAnimations {
+    constructor(spriteSystem) {
+      this.system = spriteSystem;
+    }
+    
+    playWave() {
+      if (!this.system.sprite) return;
+      
+      const originalY = this.system.sprite.position.y;
+      
+      const waveTL = gsap.timeline();
+      waveTL
+        .to(this.system.sprite.position, {
+          y: originalY + 0.5,
+          duration: 0.2,
+          ease: "back.out(1.7)"
+        })
+        .to(this.system.sprite.position, {
+          y: originalY,
+          duration: 0.3,
+          ease: "bounce.out"
+        })
+        .to(this.system.sprite.rotation, {
+          z: Math.PI / 6,
+          duration: 0.1,
+          repeat: 3,
+          yoyo: true
+        }, "<");
+    }
+    
+    playDance() {
+      if (!this.system.sprite) return;
+      
+      const danceTL = gsap.timeline();
+      danceTL
+        .to(this.system.sprite.rotation, {
+          x: Math.PI / 4,
+          duration: 0.3,
+          ease: "back.out(1.7)"
+        })
+        .to(this.system.sprite.position, {
+          y: "+=0.3",
+          duration: 0.2
+        })
+        .to(this.system.sprite.rotation, {
+          x: -Math.PI / 4,
+          duration: 0.3
+        })
+        .to(this.system.sprite.position, {
+          y: "-=0.3",
+          duration: 0.2
+        })
+        .to(this.system.sprite.rotation, {
+          x: 0,
+          duration: 0.3
+        });
+    }
+    
+    playThink() {
+      if (!this.system.sprite) return;
+      
+      // 添加思考气泡（可以在这里创建气泡粒子）
+      console.log('显示思考气泡动画...');
+      
+      gsap.to(this.system.sprite.material, {
+        color: this.system.colors.accent,
+        duration: 0.5,
+        yoyo: true,
+        repeat: 1
+      });
+    }
+    
+    playShy() {
+      if (!this.system.sprite) return;
+      
+      const shyTL = gsap.timeline();
+      shyTL
+        .to(this.system.sprite.material, {
+          color: this.system.colors.blush,
+          duration: 0.3
+        })
+        .to(this.system.sprite.scale, {
+          x: 0.9,
+          y: 0.9,
+          z: 0.9,
+          duration: 0.5,
+          ease: "elastic.out(1, 0.5)"
+        })
+        .to(this.system.sprite.material, {
+          color: this.system.colors.primary,
+          duration: 0.5
+        })
+        .to(this.system.sprite.scale, {
+          x: 1,
+          y: 1,
+          z: 1,
+          duration: 0.3
+        });
+    }
+    
+    playRandomReaction() {
+      const reactions = [
+        this.playWave,
+        this.playDance,
+        this.playThink,
+        this.playShy
+      ];
+      
+      const randomReaction = reactions[Math.floor(Math.random() * reactions.length)];
+      randomReaction.call(this);
+    }
+    
+    changeDemoMode() {
+      // 切换显示模式
+      alert('切换模式功能 - 这里可以切换到不同的视觉主题');
+    }
+  }
+  
+  // 等待DOM加载完成后初始化
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initDigitalSprite);
+  } else {
+    // DOM已经加载完成
+    initDigitalSprite();
+  }
+  </script>
+  
+  <!-- 注意：这个组件需要依赖Three.js和GSAP库 -->
+  <!-- 您需要在loader.js中或在此组件之前引入这些库 -->
+  <!-- 建议的CDN链接： -->
+  <!-- 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/loaders/GLTFLoader.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/controls/OrbitControls.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+  -->
